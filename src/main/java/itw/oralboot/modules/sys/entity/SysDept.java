@@ -29,6 +29,31 @@ public class SysDept implements Serializable {
     private Integer docNum;
 
     /**
+     * 科室主任
+     */
+    private String director;
+
+    /**
+     * 科室房间
+     */
+    private String deptRoom;
+
+    /**
+     * 剩余可预约人数
+     */
+    private Integer residualNum;
+
+    /**
+     * 状态
+     */
+    private Integer status;
+
+    /**
+     * 科室描述
+     */
+    private String description;
+
+    /**
      * 创建者ID
      */
     private Long createUserId;

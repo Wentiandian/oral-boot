@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,user-scalable=no,minimal-ui">
+    <title>菩提阁</title>
+    <link rel="icon" href="../images/favico.ico">
+    <!--element-ui的样式-->
+    <link rel="stylesheet" href="../../backend/plugins/element-ui/index.css" />
+    <!-- 引入样式  -->
+    <link rel="stylesheet" href="../styles/index.css" />
+    <!--引入vant样式-->
+    <link rel="stylesheet" href="../styles/vant.min.css"/>
+    <!--本页面内容的样式-->
+    <link rel="stylesheet" href="../styles/user.css" />
+</head>
+<body>
+    <div id="user" class="app">
+        <div class="divHead">
+            <div class="divTitle">
+                <i class="el-icon-arrow-left" @click="goBack"></i>个人中心
+            </div>
+            <div class="divUser">
+                <img :src="imgPathConvert()"/>
+                <div class="desc">
+                    <div class="divName" >{{userName}} <img :src="sexImage"/></div>
+                    <div class="divPhone">{{userPhone}}</div>
+                </div>
+            </div>
+
+            <div class="userUpload">
+                更换头像：<el-upload
+                        class="avatar-uploader"
+                        action="../../common/upload"
+                        :show-file-list="false"
+                        :on-success="handleAvatarSuccess"
+                        :before-upload="beforeAvatarUpload">
+                    <img v-if="imageUrl" :src="imageUrl" class="avatar">
+                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                </el-upload>
+            </div>
+            <div class="userSex">
+                性别：
+                <template>
+                    <el-radio v-model="radio" label="1" @change="getValue()">男</el-radio>
+                    <el-radio v-model="radio" label="2" @change="getValue()">女</el-radio>
+                </template><br>
+            </div>
+
+            <div class="userName">
+                姓名：<el-input v-model="form.name" placeholder="请输入内容"></el-input>
+            </div>
+
+            <div class="userId">
+                身份证号：<el-input v-model="form.idNumber" placeholder="请输入内容"></el-input>
+            </div>
+
+            <div class="saveInfo">
+                <el-button type="warning" @click="update">保存</el-button>
+            </div>
+        </div>
+    </div>
+    <!-- 开发环境版本，包含了有帮助的命令行警告 -->
+    <script src="../../backend/plugins/vue/vue.js"></script>
+    <!-- 引入组件库 -->
+    <script src="../../backend/plugins/element-ui/index.js"></script>
+    <!-- 引入vant组件 -->
+    <script src="../js/vant.min.js"></script>
+    <!--不同屏幕尺寸根字体设置-->
+    <script src="../js/base.js"></script>
+    <!-- 引入axios -->
+    <script src="../../backend/plugins/axios/axios.min.js"></script>
+    <script src="../js/request.js"></script>
+    <script src="../api/order.js"></script>
+    <script src="../api/login.js"></script>
+    <script src="../api/main.js"></script>
+    <script src="../js/common.js"></script>
+
+    <script>
+        new Vue({
+            el: "#user",
+            data() {
+                return {
+                    imageUrl:'',
+                    userName:'',
+                    headPage:'',
+                    sexImage:'',
+                    radio:1,
+                    form:{
+                        avatar: '',
+                        name: '',
+                        sex:'',
+                        idNumber:''
+                    }
+                }
+            },
+            computed: {},
+            created() {
+                const phone = location.search.split("=")[1];
+                this.userPhone=phone
+                this.userName=''
+                this.headPage=''
+                this.sexImage=''
+                this.getUserMss()
+            },
+            mounted() {
+            },
+            methods: {
+                goBack() {
+                    history.go(-1)
+                    /*sessionStorage.setItem("flg","0");
+                    location.replace("/front/page/user.html")*/
+                },
+                getValue(){
+                    //console.log(this.radio);
+                    this.form.sex=this.radio;
+                },
+                handleAvatarSuccess(res, file) {
+                    this.imageUrl = URL.createObjectURL(file.raw);
+                    this.headPage=res.data
+                    this.form.avatar=res.data
+                },
+                beforeAvatarUpload(file) {
+                    const isJPG = file.type === 'image/jpeg';
+                    const isLt2M = file.size / 1024 / 1024 < 2;
+
+                    if (!isJPG) {
+                        this.$message.error('上传头像图片只能是 JPG 格式!');
+                    }
+                    if (!isLt2M) {
+                        this.$message.error('上传头像图片大小不能超过 2MB!');
+                    }
+                    return isJPG && isLt2M;
+                },
+                getUserMss(){
+                    $axios({
+                        'url': '/user/userMess/'+this.userPhone,
+                        'method': 'get',
+                    }).then(res=>{
+                        //console.log(res.data)
+                        this.userName=res.data.name
+                        this.headPage=res.data.avatar
+                        this.form.name=res.data.name
+                        this.form.idNumber=res.data.idNumber
+                        this.form.sex=res.data.sex
+                        this.headPage=res.data.avatar
+                        if(res.data.sex === "2"){
+                            this.sexImage="../images/women.png"
+                        }else{
+                            this.sexImage="../images/man.png"
+                        }
+                    })
+                },
+                update(){
+                    const data = this.form;
+                    $axios({
+                        'url': '/user/update',
+                        'method': 'put',
+                        data
+                    }).then(res=>{
+                        console.log(res)
+                        if(res.code === 1){
+                            window.requestAnimationFrame(()=>{
+                                window.location.replace('/front/page/user.html')
+                            })
+                        }else{
+                            this.$notify({ type:'warning', message:res.msg});
+                        }
+                    })
+                },
+                //网络图片路径转换
+                imgPathConvert(){
+                    //console.log(this.headPage)
+                    return imgPath(this.headPage)
+                },
+            }
+        })
+    </script>
+
+    <style>
+        .userUpload{
+            margin-top: 20px;
+        }
+        .userName{
+            margin-top: 20px;
+        }
+        .userId{
+            margin-top: 20px;
+        }
+        .saveInfo{
+            margin-top: 20px;
+            text-align: center;
+        }
+        .avatar-uploader .el-upload {
+            border: 1px dashed #d9d9d9;
+            border-radius: 6px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        .avatar-uploader .el-upload:hover {
+            border-color: #409EFF;
+        }
+        .avatar-uploader-icon {
+            font-size: 28px;
+            color: #8c939d;
+            width: 80px;
+            height: 80px;
+            line-height: 80px;
+            text-align: center;
+        }
+        .avatar {
+            width: 80px;
+            height: 80px;
+            display: block;
+        }
+    </style>
+</body>
+
+
+</html>
