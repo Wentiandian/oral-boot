@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
 
 @Data
 @TableName("sys_file")
@@ -36,4 +38,14 @@ public class SysFileEntity implements Serializable {
      * 文件大小
      */
     private double size;
+
+    /**
+     * 文件类型
+     */
+    private Integer status;
+
+    /**
+     * 文件上传时间
+     */
+    private Date fileTime;
 }

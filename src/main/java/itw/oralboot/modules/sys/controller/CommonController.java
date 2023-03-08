@@ -1,13 +1,13 @@
 package itw.oralboot.modules.sys.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import itw.oralboot.common.utils.R;
 import itw.oralboot.modules.sys.entity.SysDept;
+import itw.oralboot.modules.sys.entity.SysFileEntity;
 import itw.oralboot.modules.sys.service.SysDeptService;
+import itw.oralboot.modules.sys.service.SysFileService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
@@ -27,6 +27,9 @@ public class CommonController extends AbstractController{
 
     @Autowired
     private SysDeptService sysDeptService;
+
+    @Autowired
+    private SysFileService sysFileService;
 
     private String basePath="E:/work/oral-files/";
 
@@ -72,7 +75,7 @@ public class CommonController extends AbstractController{
      */
     @GetMapping("/download")
     public void download(String name, HttpServletResponse response) throws Exception {
-        logger.info("文件名：{}",name);
+        //logger.info("文件名：{}",name);
         //通过输入流读取文件
         FileInputStream fileInputStream=new FileInputStream(new File(basePath+name));
 
@@ -96,4 +99,43 @@ public class CommonController extends AbstractController{
         toClient.close();
         fileInputStream.close();
     }
+
+    /**
+     * 移除文件
+     * @param fileName
+     * @return
+     */
+    @GetMapping("/deleteFile")
+    public R deleteFile(@RequestParam("fileName") String fileName){
+        File file = new File(basePath + fileName);
+        if (file.exists()){
+            file.delete();
+        }
+        else{
+            R.error("文件移除失败");
+        }
+        LambdaQueryWrapper<SysFileEntity> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(SysFileEntity::getFileName,fileName);
+        sysFileService.remove(queryWrapper);
+        return R.ok("文件移除成功");
+    }
+
+   /* *//**
+     * 取消编辑，移除所有文件
+     * @param fileNames
+     * @return
+     *//*
+    @PostMapping("/deleteFiles")
+    public R deleteFiles(@RequestBody List<String> fileNames){
+        logger.info("aaa");;
+        for (int i = 0; i < fileNames.size(); i++) {
+            File file = new File(basePath + fileNames.get(i));
+            if (file.exists()){
+                file.delete();
+            }else{
+                R.error("文件移除失败");
+            }
+        }
+        return R.error("文件移除成功");
+    }*/
 }

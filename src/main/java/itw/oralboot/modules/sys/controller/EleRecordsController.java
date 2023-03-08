@@ -15,10 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 电子病历信息管理
@@ -104,10 +101,12 @@ public class EleRecordsController extends AbstractController{
         eleRecordsFileListFrom.setCreateUserId(getUserId());
         eleRecordsService.save(eleRecordsFileListFrom);
 
+        //病历图片文件保存
         Long relationId = eleRecordsFileListFrom.getEleRecordsId();
         List<SysFileEntity> fileList = eleRecordsFileListFrom.getFile();
         for (int i = 0; i < fileList.size(); i++) {
             fileList.get(i).setRelationId(relationId);
+            fileList.get(i).setFileTime(formatter.parse(formatter.format(date)));
         }
         sysFileService.saveBatch(fileList);
         return R.ok();
@@ -126,13 +125,20 @@ public class EleRecordsController extends AbstractController{
 
         Long relationId = eleRecordsFileListFrom.getEleRecordsId();
         List<SysFileEntity> fileList = eleRecordsFileListFrom.getFile();
+        List<SysFileEntity> newFileList =new ArrayList<>();
         if(fileList!=null){
             for (int i = 0; i < fileList.size(); i++) {
-                fileList.get(i).setRelationId(relationId);
+                if(fileList.get(i).getFileName() != null){
+                    newFileList.add(fileList.get(i));
+                }
             }
-            sysFileService.saveBatch(fileList);
-            logger.info(fileList.toString());
+            for (int i = 0; i < newFileList.size(); i++) {
+                newFileList.get(i).setRelationId(relationId);
+                newFileList.get(i).setFileTime(formatter.parse(formatter.format(date)));
+            }
+            sysFileService.saveBatch(newFileList);
         }
         return R.ok();
     }
+
 }
