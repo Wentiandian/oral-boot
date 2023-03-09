@@ -3,8 +3,10 @@ package itw.oralboot.modules.sys.controller;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import itw.oralboot.common.utils.R;
 import itw.oralboot.modules.sys.entity.SysDept;
+import itw.oralboot.modules.sys.entity.SysDrugEntity;
 import itw.oralboot.modules.sys.entity.SysFileEntity;
 import itw.oralboot.modules.sys.service.SysDeptService;
+import itw.oralboot.modules.sys.service.SysDrugService;
 import itw.oralboot.modules.sys.service.SysFileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +17,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -30,6 +33,9 @@ public class CommonController extends AbstractController{
 
     @Autowired
     private SysFileService sysFileService;
+
+    @Autowired
+    private SysDrugService sysDrugService;
 
     private String basePath="E:/work/oral-files/";
 
@@ -122,7 +128,7 @@ public class CommonController extends AbstractController{
 
    /* *//**
      * 取消编辑，移除所有文件
-     * @param fileNames
+     * @param
      * @return
      *//*
     @PostMapping("/deleteFiles")
@@ -138,4 +144,21 @@ public class CommonController extends AbstractController{
         }
         return R.error("文件移除成功");
     }*/
+
+    /**
+     * 获取药品剂型列表
+     * @return
+     */
+    @GetMapping("/drugDosageList")
+    public R drugDosageList(){
+        List<SysDrugEntity> sysDrugEntityList = sysDrugService.list();
+        for (int i = 0; i < sysDrugEntityList.size(); i++) {
+            for (int j = 0; j < sysDrugEntityList.size(); j++) {
+                if (i != j && sysDrugEntityList.get(i).getDrugDosageForm().equals(sysDrugEntityList.get(j).getDrugDosageForm())) {
+                    sysDrugEntityList.remove(j);
+                }
+            }
+        }
+        return R.ok().put("list",sysDrugEntityList);
+    }
 }

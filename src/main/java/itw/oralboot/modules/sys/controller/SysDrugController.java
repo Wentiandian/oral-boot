@@ -2,8 +2,8 @@ package itw.oralboot.modules.sys.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import itw.oralboot.common.utils.R;
-import itw.oralboot.modules.sys.entity.SysDept;
-import itw.oralboot.modules.sys.service.SysDeptService;
+import itw.oralboot.modules.sys.entity.SysDrugEntity;
+import itw.oralboot.modules.sys.service.SysDrugService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.text.ParseException;
@@ -16,14 +16,14 @@ import java.util.Map;
  * 科室信息管理
  */
 @RestController
-@RequestMapping("/sys/ksgl")
-public class SysDeptController extends AbstractController{
+@RequestMapping("/sys/ypfl")
+public class SysDrugController extends AbstractController{
 
     @Autowired
-    private SysDeptService sysDeptService;
+    private SysDrugService sysDrugService;
 
     /**
-     * 查询所有科室信息
+     * 查询所有药品
      * @param params
      * @return
      */
@@ -31,41 +31,37 @@ public class SysDeptController extends AbstractController{
     public R list(@RequestParam Map<String, Object> params){
         Integer current = Integer.parseInt(params.get("page").toString());
         Integer pageSize = Integer.parseInt(params.get("limit").toString());
-        String deptId = (String) params.get("deptId");
-        String deptName = (String) params.get("deptName");
-        String director = (String) params.get("director");
+        String drugId = (String) params.get("drugId");
+        String drugName = (String) params.get("drugName");
+        String drugDosageForm = (String) params.get("drugDosageForm");
         String starDate = (String) params.get("starDate");
         String endDate = (String) params.get("endDate");
-        String status = (String) params.get("status");
 
-        Page<SysDept> sysDeptPage = (Page<SysDept>) sysDeptService.findPage(current,pageSize,deptId,deptName,director,status,starDate,endDate);
+        Page<SysDrugEntity> sysDeptPage = (Page<SysDrugEntity>) sysDrugService.findPage(current,pageSize,drugId,drugName,drugDosageForm,starDate,endDate);
         return R.ok().put("list",sysDeptPage);
     }
 
     /**
-     * 根据科室ID查询科室消息
-     * @param deptId
+     * 根据药品ID查询药品信息
+     * @param drugId
      * @return
-     * @throws ParseException
      */
-    @GetMapping("/info/{deptId}")
-    public R getInfoById(@PathVariable("deptId") Long deptId) throws ParseException {
-
-        SysDept sysDept =  sysDeptService.getById(deptId);
-
-        return R.ok().put("info",sysDept);
+    @GetMapping("/info/{drugId}")
+    public R info(@PathVariable("drugId") Long drugId){
+        SysDrugEntity sysDrugEntity = sysDrugService.getById(drugId);
+        return R.ok().put("info",sysDrugEntity);
     }
 
     /**
      * 保存
      */
     @PostMapping("/save")
-    public R save(@RequestBody SysDept sysDept) throws ParseException {
-        sysDept.setCreateUserId(getUserId());
+    public R save(@RequestBody SysDrugEntity sysDrugEntity) throws ParseException {
+        sysDrugEntity.setCreateUserId(getUserId());
         SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z");
         Date date = new Date(System.currentTimeMillis());
-        sysDept.setCreateTime(formatter.parse(formatter.format(date)));
-        sysDeptService.save(sysDept);
+        sysDrugEntity.setCreateTime(formatter.parse(formatter.format(date)));
+        sysDrugService.save(sysDrugEntity);
         return R.ok();
     }
 
@@ -73,23 +69,23 @@ public class SysDeptController extends AbstractController{
      * 修改
      */
     @PostMapping("/update")
-    public R update(@RequestBody SysDept sysDept) throws ParseException {
+    public R update(@RequestBody SysDrugEntity sysDrugEntity) throws ParseException {
         SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z");
         Date date = new Date(System.currentTimeMillis());
-        sysDept.setModifyTime(formatter.parse(formatter.format(date)));
-        sysDept.setModifyUserId(getUserId());
-        sysDeptService.updateById(sysDept);
+        sysDrugEntity.setModifyTime(formatter.parse(formatter.format(date)));
+        sysDrugEntity.setModifyUserId(getUserId());
+        sysDrugService.updateById(sysDrugEntity);
         return R.ok();
     }
 
     /**
-     * 对科室信息进行删除
+     * 对药品信息进行删除
      * @param deptIds
      * @return
      */
     @PostMapping("/delete")
     public R deleteGh(@RequestBody Long[] deptIds){
-        sysDeptService.removeByIds(Arrays.asList(deptIds));
+        sysDrugService.removeByIds(Arrays.asList(deptIds));
         return R.ok();
     }
 }
