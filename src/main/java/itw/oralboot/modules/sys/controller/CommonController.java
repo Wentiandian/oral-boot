@@ -161,4 +161,22 @@ public class CommonController extends AbstractController{
         }
         return R.ok().put("list",sysDrugEntityList);
     }
+
+
+    /**
+     * 获取药品名称剂型列表
+     * @return
+     */
+    @GetMapping("/drugNameList")
+    public R drugNameList(){
+        List<SysDrugEntity> sysDrugEntityList = sysDrugService.list();
+        for (int i = 0; i < sysDrugEntityList.size(); i++) {
+            for (int j = 0; j < sysDrugEntityList.size(); j++) {
+                if (i != j && sysDrugEntityList.get(i).getDrugName().equals(sysDrugEntityList.get(j).getDrugName())) {
+                    sysDrugEntityList.remove(j);
+                }
+            }
+        }
+        return R.ok().put("list",sysDrugEntityList);
+    }
 }

@@ -54,6 +54,51 @@ public class SysDrugEntity implements Serializable {
     private Integer inventory;
 
     /**
+     * 用法用量
+     */
+    private String usageDosage;
+
+    /**
+     * 存放地址
+     */
+    private String address;
+
+    /**
+     * 保质期
+     */
+    private String lifeTime;
+
+    /**
+     * 供应商
+     */
+    private String vendor;
+
+    /**
+     * 入库日期
+     */
+    private Date inboundTime;
+
+    /**
+     * 出库日期
+     */
+    private Date outboundTime;
+
+    /**
+     * 入库批次
+     */
+    private String inboundBatch;
+
+    /**
+     * 出库批次
+     */
+    private String outboundBatch;
+
+    /**
+     * 状态
+     */
+    private Integer status;
+
+    /**
      * 创建者ID
      */
     private Long createUserId;

@@ -19,15 +19,23 @@ public class SysDrugServiceImpl extends ServiceImpl<SysDrugDao, SysDrugEntity> i
     private SysDrugDao sysDrugDao;
 
     @Override
-    public IPage<SysDrugEntity> findPage(Integer current, Integer pageSize, String drugId, String drugName, String drugDosageForm, String starDate, String endDate) {
+    public IPage<SysDrugEntity> findPage(Integer current, Integer pageSize, String drugId, String drugName, String drugDosageForm,String status, String starDate, String endDate) {
         IPage<SysDrugEntity> page=new Page<>(current,pageSize);
         LambdaQueryWrapper<SysDrugEntity> queryWrapper=new LambdaQueryWrapper<>();
         queryWrapper.like(Strings.isNotEmpty(drugId), SysDrugEntity::getDrugId,drugId)
                 .like(Strings.isNotEmpty(drugName), SysDrugEntity::getDrugName, drugName)
                 .like(Strings.isNotEmpty(drugDosageForm), SysDrugEntity::getDrugDosageForm, drugDosageForm)
-                .between(Strings.isNotEmpty(starDate) && Strings.isNotEmpty(endDate),SysDrugEntity::getCreateTime,starDate,endDate)
+                .eq(Strings.isNotEmpty(status),SysDrugEntity::getStatus,status)
                 .orderByDesc(SysDrugEntity::getCreateTime);
 
+        if(status.equals("")){
+            queryWrapper.between(Strings.isNotEmpty(starDate) && Strings.isNotEmpty(endDate),SysDrugEntity::getCreateTime,starDate,endDate);
+        }else if(status.equals("1")){
+            queryWrapper.between(Strings.isNotEmpty(starDate) && Strings.isNotEmpty(endDate),SysDrugEntity::getInboundTime,starDate,endDate);
+        }else{
+            queryWrapper.between(Strings.isNotEmpty(starDate) && Strings.isNotEmpty(endDate),SysDrugEntity::getOutboundTime,starDate,endDate);
+
+        }
         page = sysDrugDao.selectPage(page,queryWrapper);
 
         return page;

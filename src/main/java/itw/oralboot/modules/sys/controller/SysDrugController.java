@@ -37,7 +37,7 @@ public class SysDrugController extends AbstractController{
         String starDate = (String) params.get("starDate");
         String endDate = (String) params.get("endDate");
 
-        Page<SysDrugEntity> sysDeptPage = (Page<SysDrugEntity>) sysDrugService.findPage(current,pageSize,drugId,drugName,drugDosageForm,starDate,endDate);
+        Page<SysDrugEntity> sysDeptPage = (Page<SysDrugEntity>) sysDrugService.findPage(current,pageSize,drugId,drugName,drugDosageForm,"",starDate,endDate);
         return R.ok().put("list",sysDeptPage);
     }
 
