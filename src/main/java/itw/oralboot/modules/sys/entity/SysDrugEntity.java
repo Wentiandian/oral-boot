@@ -34,7 +34,7 @@ public class SysDrugEntity implements Serializable {
     private String drugSize;
 
     /**
-     * 规格
+     * 价格
      */
     private String price;
 

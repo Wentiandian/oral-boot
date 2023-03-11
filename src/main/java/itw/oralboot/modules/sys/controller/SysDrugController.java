@@ -13,7 +13,7 @@ import java.util.Date;
 import java.util.Map;
 
 /**
- * 科室信息管理
+ * 药物信息管理
  */
 @RestController
 @RequestMapping("/sys/ypfl")

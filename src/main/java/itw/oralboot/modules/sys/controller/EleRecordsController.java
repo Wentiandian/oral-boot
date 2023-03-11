@@ -67,7 +67,8 @@ public class EleRecordsController extends AbstractController{
         EleRecordsEntity eleRecordsEntity  =  eleRecordsService.getById(eleRecordsId);
 
         LambdaQueryWrapper<SysFileEntity> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(SysFileEntity::getRelationId,eleRecordsId);
+        queryWrapper.eq(SysFileEntity::getRelationId,eleRecordsId)
+                .eq(SysFileEntity::getStatus,1);
         List<SysFileEntity> fileEntityList = sysFileService.list(queryWrapper);
 
         return R.ok().put("info",eleRecordsEntity).put("fileList",fileEntityList);
