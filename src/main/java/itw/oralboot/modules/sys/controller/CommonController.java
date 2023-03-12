@@ -2,16 +2,12 @@ package itw.oralboot.modules.sys.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import itw.oralboot.common.utils.R;
-import itw.oralboot.modules.sys.entity.SysDept;
-import itw.oralboot.modules.sys.entity.SysDrugEntity;
-import itw.oralboot.modules.sys.entity.SysFileEntity;
-import itw.oralboot.modules.sys.service.SysDeptService;
-import itw.oralboot.modules.sys.service.SysDrugService;
-import itw.oralboot.modules.sys.service.SysFileService;
+import itw.oralboot.modules.sys.entity.*;
+import itw.oralboot.modules.sys.form.GhBookingListForm;
+import itw.oralboot.modules.sys.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
@@ -20,6 +16,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * 公共控制类
@@ -36,6 +33,12 @@ public class CommonController extends AbstractController{
 
     @Autowired
     private SysDrugService sysDrugService;
+
+    @Autowired
+    private SysGhService sysGhService;
+
+    @Autowired
+    private SysBookingService sysBookingService;
 
     private String basePath="E:/work/oral-files/";
 
@@ -126,25 +129,6 @@ public class CommonController extends AbstractController{
         return R.ok("文件移除成功");
     }
 
-   /* *//**
-     * 取消编辑，移除所有文件
-     * @param
-     * @return
-     *//*
-    @PostMapping("/deleteFiles")
-    public R deleteFiles(@RequestBody List<String> fileNames){
-        logger.info("aaa");;
-        for (int i = 0; i < fileNames.size(); i++) {
-            File file = new File(basePath + fileNames.get(i));
-            if (file.exists()){
-                file.delete();
-            }else{
-                R.error("文件移除失败");
-            }
-        }
-        return R.error("文件移除成功");
-    }*/
-
     /**
      * 获取药品剂型列表
      * @return
@@ -178,5 +162,39 @@ public class CommonController extends AbstractController{
             }
         }
         return R.ok().put("list",sysDrugEntityList);
+    }
+
+    /**
+     * 获取挂号和预约中未就诊的患者列表
+     * @return
+     */
+    @GetMapping("/patientList")
+    public R patientList(){
+        LambdaQueryWrapper<SysGhEntity> sysGhEntityLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        sysGhEntityLambdaQueryWrapper.eq(SysGhEntity::getStatus,1);
+        List<SysGhEntity> sysGhEntityList = sysGhService.list(sysGhEntityLambdaQueryWrapper);
+
+        LambdaQueryWrapper<SysBooking> sysBookingLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        sysBookingLambdaQueryWrapper.eq(SysBooking::getStatus,1);
+        List<SysBooking> sysBookingList = sysBookingService.list(sysBookingLambdaQueryWrapper);
+
+        List<GhBookingListForm> list1 = sysGhEntityList.stream().map((item)->{
+            GhBookingListForm ghBookingListForm = new GhBookingListForm();
+            ghBookingListForm.setPatientId(item.getPatientId());
+            ghBookingListForm.setPatientName(item.getPatientName());
+            return ghBookingListForm;
+        }).collect(Collectors.toList());
+
+        List<GhBookingListForm> list2 = sysBookingList.stream().map((item)->{
+            GhBookingListForm ghBookingListForm = new GhBookingListForm();
+            ghBookingListForm.setPatientId(item.getPatientId());
+            ghBookingListForm.setPatientName(item.getPatientName());
+            return ghBookingListForm;
+        }).collect(Collectors.toList());
+
+        List<GhBookingListForm> ghBookingListFormList = new ArrayList<>();
+        ghBookingListFormList.addAll(list1);
+        ghBookingListFormList.addAll(list2);
+        return R.ok().put("list",ghBookingListFormList);
     }
 }

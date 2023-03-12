@@ -82,7 +82,12 @@ public class EleRecordsEntity implements Serializable {
      * 药物单号
      */
     @TableId
-    private Long drugId;
+    private Long prescriptionId;
+
+    /**
+     * 0：挂号   1：预约
+     */
+    private Integer isGhBooking;
 
     /**
      * 创建者ID

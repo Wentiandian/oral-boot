@@ -36,6 +36,12 @@ public class SysBooking implements Serializable {
     private Long deptId;
 
     /**
+     * 病人名称
+     */
+    private String patientName;
+
+
+    /**
      * 预约时间
      */
     private Date bookingTime;

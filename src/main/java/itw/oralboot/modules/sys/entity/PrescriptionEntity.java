@@ -68,6 +68,11 @@ public class PrescriptionEntity implements Serializable {
     private String sum;
 
     /**
+     * 用来标记获取药物单ID   0：未获取到   1：已获取到
+     */
+    private Integer flag;
+
+    /**
      * 创建者ID
      */
     private Long createUserId;
