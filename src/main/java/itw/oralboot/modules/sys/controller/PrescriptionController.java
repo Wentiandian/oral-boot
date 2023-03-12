@@ -12,9 +12,9 @@ import itw.oralboot.modules.sys.service.PrescriptionService;
 import itw.oralboot.modules.sys.service.SysDrugService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -99,7 +99,6 @@ public class PrescriptionController extends AbstractController{
         orderEntity.setStatus("0");
         orderEntity.setCreateTime(formatter.parse(formatter.format(date)));
         orderEntity.setCreateUserId(getUserId());
-        logger.info(orderEntity.toString());
         orderService.save(orderEntity);
 
         //更新药物单信息
@@ -107,6 +106,25 @@ public class PrescriptionController extends AbstractController{
         prescriptionEntity.setModifyUserId(getUserId());
         prescriptionEntity.setStatus("1");
         prescriptionService.updateById(prescriptionEntity);
+        return R.ok();
+    }
+
+
+    /**
+     * 对药物单信息进行删除与之关联的药品信息
+     * @param prescriptionIds
+     * @return
+     */
+    @PostMapping("/delete")
+    public R deleteGh(@RequestBody Long[] prescriptionIds){
+        //删除药物单对应的药品信息
+        LambdaQueryWrapper<DrugPreEntity> queryWrapper = new LambdaQueryWrapper<>();
+        for (int i = 0; i < prescriptionIds.length; i++) {
+            queryWrapper.eq(DrugPreEntity::getPrescriptionId,prescriptionIds[i]);
+            drugPreService.remove(queryWrapper);
+        }
+        //删除药物单信息
+        prescriptionService.removeByIds(Arrays.asList(prescriptionIds));
         return R.ok();
     }
 }
