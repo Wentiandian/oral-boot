@@ -110,8 +110,14 @@ public class SysUserController extends AbstractController {
 	@RequiresPermissions("sys:user:save")
 	public R save(@RequestBody SysUserEntity user){
 		ValidatorUtils.validateEntity(user, AddGroup.class);
-		
 		user.setCreateUserId(getUserId());
+		for (int i = 0; i < user.getRoleIdList().size(); i++) {
+			if(user.getRoleIdList().get(i) == 3){
+				user.setFlag("1");
+			}else{
+				user.setFlag("0");
+			}
+		}
 		sysUserService.saveUser(user);
 		
 		return R.ok();
@@ -127,6 +133,14 @@ public class SysUserController extends AbstractController {
 		ValidatorUtils.validateEntity(user, UpdateGroup.class);
 
 		user.setCreateUserId(getUserId());
+
+		for (int i = 0; i < user.getRoleIdList().size(); i++) {
+			if(user.getRoleIdList().get(i) == 3){
+				user.setFlag("1");
+			}else{
+				user.setFlag("0");
+			}
+		}
 		sysUserService.update(user);
 		
 		return R.ok();

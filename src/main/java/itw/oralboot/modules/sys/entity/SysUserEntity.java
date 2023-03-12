@@ -60,6 +60,11 @@ public class SysUserEntity implements Serializable {
 	private String name;
 
 	/**
+	 * 是否为超级管理员
+	 */
+	private String flag;
+
+	/**
 	 * 性别
 	 */
 	private String sex;

@@ -13,9 +13,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -39,6 +37,9 @@ public class CommonController extends AbstractController{
 
     @Autowired
     private SysBookingService sysBookingService;
+
+    @Autowired
+    private SysRoleService sysRoleService;
 
     private String basePath="E:/work/oral-files/";
 
@@ -196,5 +197,15 @@ public class CommonController extends AbstractController{
         ghBookingListFormList.addAll(list1);
         ghBookingListFormList.addAll(list2);
         return R.ok().put("list",ghBookingListFormList);
+    }
+
+    /**
+     * 获取角色列表
+     * @return
+     */
+    @GetMapping("/roleList")
+    public R roleList(){
+        List<SysRoleEntity> sysRoleEntityList = sysRoleService.list();
+        return R.ok().put("list",sysRoleEntityList);
     }
 }

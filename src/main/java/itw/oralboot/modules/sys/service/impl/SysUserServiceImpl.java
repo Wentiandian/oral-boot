@@ -8,8 +8,10 @@
 
 package itw.oralboot.modules.sys.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import itw.oralboot.common.exception.RRException;
 import itw.oralboot.common.utils.Constant;
@@ -22,6 +24,7 @@ import itw.oralboot.modules.sys.service.SysUserRoleService;
 import itw.oralboot.modules.sys.service.SysUserService;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.util.Strings;
 import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,6 +47,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
 	private SysUserRoleService sysUserRoleService;
 	@Autowired
 	private SysRoleService sysRoleService;
+
+	@Autowired
+	private SysUserDao sysUserDao;
 
 	@Override
 	public PageUtils queryPage(Map<String, Object> params) {
@@ -121,7 +127,27 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
 		return this.update(userEntity,
 				new QueryWrapper<SysUserEntity>().eq("user_id", userId).eq("password", password));
 	}
-	
+
+	@Override
+	public IPage<SysUserEntity> findPage(Integer current, Integer pageSize, String userId, String name, String status, String starDate, String endDate) {
+		//构造分页构造器
+		IPage<SysUserEntity> page=new Page<>(current,pageSize);
+
+		//条件构造器
+		LambdaQueryWrapper<SysUserEntity> queryWrapper=new LambdaQueryWrapper<>();
+
+		//添加过滤条件
+		queryWrapper.like(Strings.isNotEmpty(userId), SysUserEntity::getUserId,userId)
+				.like(Strings.isNotEmpty(name),SysUserEntity::getName,name)
+				.eq(Strings.isNotEmpty(status),SysUserEntity::getStatus,status)
+				.eq(SysUserEntity::getFlag,"0")
+				.between(Strings.isNotEmpty(starDate) && Strings.isNotEmpty(endDate), SysUserEntity::getCreateTime,starDate,endDate)
+				.orderByDesc(SysUserEntity::getCreateTime);//添加排序条件
+
+		sysUserDao.selectPage(page,queryWrapper);
+		return page;
+	}
+
 	/**
 	 * 检查角色是否越权
 	 */

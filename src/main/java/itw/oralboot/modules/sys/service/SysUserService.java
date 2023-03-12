@@ -8,6 +8,7 @@
 
 package itw.oralboot.modules.sys.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import itw.oralboot.common.utils.PageUtils;
 import itw.oralboot.modules.sys.entity.SysUserEntity;
@@ -63,4 +64,18 @@ public interface SysUserService extends IService<SysUserEntity> {
 	 * @param newPassword  新密码
 	 */
 	boolean updatePassword(Long userId, String password, String newPassword);
+
+	/**
+	 * 查询所有医护工作者信息
+	 * @param current
+	 * @param pageSize
+	 * @param userId
+	 * @param name
+	 * @param status
+	 * @param starDate
+	 * @param endDate
+	 * @return
+	 */
+	IPage<SysUserEntity> findPage(Integer current, Integer pageSize, String userId, String name, String status, String starDate, String endDate);
+
 }
