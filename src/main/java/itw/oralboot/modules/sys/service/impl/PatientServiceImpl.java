@@ -18,7 +18,7 @@ public class PatientServiceImpl extends ServiceImpl<PatientDao, PatientEntity> i
     private PatientDao patientDao;
 
     @Override
-    public IPage<PatientEntity> findPage(Integer current, Integer pageSize, String patientName) {
+    public IPage<PatientEntity> findPage(Integer current, Integer pageSize,String patientId,String patientName,String status,String starDate, String endDate) {
         //构造分页构造器
         IPage<PatientEntity> page=new Page<>(current,pageSize);
 
@@ -26,9 +26,11 @@ public class PatientServiceImpl extends ServiceImpl<PatientDao, PatientEntity> i
         LambdaQueryWrapper<PatientEntity> queryWrapper=new LambdaQueryWrapper<>();
 
         //添加过滤条件
-        queryWrapper.like(Strings.isNotEmpty(patientName),PatientEntity::getPatientName,patientName);
-        //添加排序条件
-        queryWrapper.orderByDesc(PatientEntity::getModifyTime);
+        queryWrapper.like(Strings.isNotEmpty(patientId),PatientEntity::getPatientId,patientId)
+                .like(Strings.isNotEmpty(patientName),PatientEntity::getPatientName,patientName)
+                .eq(Strings.isNotEmpty(status),PatientEntity::getStatus,status)
+                .between(Strings.isNotEmpty(starDate) && Strings.isNotEmpty(endDate), PatientEntity::getCreateTime,starDate,endDate)
+                .orderByDesc(PatientEntity::getCreateTime);//添加排序条件
 
         patientDao.selectPage(page,queryWrapper);
         return page;

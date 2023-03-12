@@ -6,5 +6,5 @@ import itw.oralboot.modules.sys.entity.PatientEntity;
 
 public interface PatientService extends IService<PatientEntity> {
 
-    IPage<PatientEntity> findPage(Integer current, Integer pageSize, String patientName);
+    IPage<PatientEntity> findPage(Integer current, Integer pageSize,String patientId,String patientName,String status,String starDate, String endDate);
 }
