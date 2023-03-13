@@ -10,7 +10,7 @@
     <!--不同屏幕尺寸根字体设置-->
     <script src="js/base.js"></script>
     <!--element-ui的样式-->
-    <link rel="stylesheet" href="../backend/plugins/element-ui/index.css" />
+    <link rel="stylesheet" href="../app/plugins/element-ui/index.css" />
     <!--引入vant样式-->
     <link rel="stylesheet" href="styles/vant.min.css"/>
     <!-- 引入样式  -->
@@ -18,6 +18,16 @@
     <!--本页面内容的样式-->
     <link rel="stylesheet" href="styles/main.css" />
   </head>
+  <style>
+    /* 父容器样式 */
+    .container{
+      margin:70px auto; width:100px; height:150px;
+    }
+    /* 子容器样式 */
+    .son{
+      margin:0 auto;height: 80px;
+    }
+  </style>
   <body>
     <div id="main" class="app">
       <div class="divHead">
@@ -27,203 +37,34 @@
         <div class="divStatic">
           <img src="images/logo.png" class="logo"/>
           <div class="divDesc">
-            <div class="divName">菩提阁餐厅</div>
-            <div class="divSend">
-                <span><img src="images/time.png"/> 距离1.5km</span>
-                <span><img src="images/money.png"/> 配送费6元</span>
-                <span><img src="images/location.png"/> 预计时长12min</span>
-            </div>
+            <div class="divName">口腔医院挂号预约平台</div>
           </div>
         </div>
         <div class="divDesc">
-          简介: 菩提阁中餐厅是菩提阁点餐的独立的品牌，定位“大众 化的美食外送餐饮”，旨为顾客打造专业美食。
+          简介: 口腔医院挂号预约平台。
         </div>
       </div>
-      <div class="divBody">
-        <div class="divType">
-          <ul>
-            <li v-for="(item,index) in categoryList" :key="index" @click="categoryClick(index,item.id,item.type)" :class="{active:activeType === index}">{{item.name}}</li>
-          </ul>
+      <div class="container">
+        <div class="son">
+          <el-button type="primary" round icon="el-icon-star-off">    立即挂号    </el-button>
         </div>
-        <div class="divMenu">
-          <div>
-            <div class="divItem" v-for="(item,index) in dishList" :key="index" @click="dishDetails(item)">
-              <el-image :src="imgPathConvert(item.image)" >
-                <div slot="error" class="image-slot">
-                  <img src="images/noImg.png"/>
-                </div>
-              </el-image>
-              <div>
-                <div class="divName">{{item.name}}</div>
-                <div class="divDesc">{{item.description}}</div>
-                <div class="divDesc">{{'月销' + (item.saleNum ? item.saleNum : 0)  }}</div>
-                <div class="divBottom"><span>￥</span><span>{{item.price/100}}</span></div>
-                <div class="divNum">
-                  <div class="divSubtract" v-if="item.number > 0">
-                    <img src="images/subtract.png" @click.prevent.stop="subtractCart(item)"/>
-                  </div>
-                  <div class="divDishNum">{{item.number}}</div>
-                  <div class="divTypes" v-if="item.flavors && item.flavors.length > 0 && !item.number " @click.prevent.stop="chooseFlavorClick(item)">选择规格</div>
-                  <div class="divAdd" v-else>
-                    <img src="images/add.png" @click.prevent.stop="addCart(item)"/>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+        <div class="son">
+          <el-button type="primary" round icon="el-icon-message">    立即预约    </el-button>
         </div>
+        <div class="son">
+          <el-button type="primary" round icon="el-icon-tickets">    电子病例    </el-button>
+        </div>
+      </div>
 
-      </div>
-      <div class="divLayer">
-        <div class="divLayerLeft"></div>
-        <div class="divLayerRight"></div>
-      </div>
-      <div class="divCart" v-if="categoryList.length > 0">
-          <div :class="{imgCartActive: cartData && cartData.length > 0, imgCart:!cartData || cartData.length<1}" @click="openCart"></div>
-          <div :class="{divGoodsNum:1===1, moreGoods:cartData && cartData.length > 99}" v-if="cartData && cartData.length > 0">{{ goodsNum }}</div>
-          <div class="divNum">
-              <span>￥</span>
-              <span>{{goodsPrice}}</span>
-          </div>
-          <div class="divPrice"></div>
-          <div :class="{btnSubmitActive: cartData && cartData.length > 0, btnSubmit:!cartData || cartData.length<1}" @click="toAddOrderPage">去结算</div>
-        </div>
-        <van-dialog v-model="dialogFlavor.show" :show-confirm-button="false" class="dialogFlavor" ref="flavorDialog">
-          <div class="dialogTitle">{{dialogFlavor.name}}</div>
-          <div class="divContent">
-            <div v-for="flavor in dialogFlavor.flavors" :key="flavor.id">
-                <div class="divFlavorTitle">{{flavor.name}}</div>
-                <span v-for="item in JSON.parse(flavor.value)" 
-                :key="item"  
-                @click="flavorClick(flavor,item)"
-                :class="{spanActive:flavor.dishFlavor === item}"
-                >{{item}}</span>
-            </div>
-          </div>
-          <div class="divBottom">
-            <div><span class="spanMoney">￥</span>{{dialogFlavor.price/100}}</div>
-            <div @click="dialogFlavorAddCart">加入购物车</div>
-          </div>
-          <div class="divFlavorClose" @click="dialogFlavor.show = false">
-            <img src="images/close.png"/>
-          </div>
-        </van-dialog>
-        <van-popup v-model="cartDialogShow" position="bottom" :style="{ height: '50%' }" class="dialogCart">
-          <div class="divCartTitle">
-            <div class="title">购物车</div>
-            <div class="clear" @click="clearCart">
-              <i class="el-icon-delete"></i> 清空
-            </div>
-          </div>
-          <div class="divCartContent">
-            <div v-for="item in cartData" :key="item.id" class="divCartItem">
-              <el-image :src="imgPathConvert(item.image)" >
-                <div slot="error" class="image-slot">
-                  <img src="images/noImg.png"/>
-                </div>
-              </el-image>
-              <div class="divDesc">
-                <div class="name">{{item.name}}</div>
-                <div class="price">
-                  <span class="spanMoney">￥</span>{{item.amount}}</div>
-              </div>
-              <div class="divNum">
-                <div class="divSubtract">
-                  <img src="images/subtract.png" @click="cartNumberSubtract(item)"/>
-                </div>
-                <div class="divDishNum">{{item.number}}</div>
-                <div class="divAdd">
-                  <img src="images/add.png" @click="cartNumAdd(item)"/>
-                </div>
-              </div>
-              <div class="divSplit"></div>
-              </div>
-          </div>
-        </van-popup>
-        <van-dialog v-model="detailsDialog.show" 
-                    :show-confirm-button="false" 
-                    class="detailsDialog" 
-                    ref="detailsDialog"
-                    v-if="detailsDialog.show"
-                    >
-          <div class="divContainer">
-            <el-image :src="imgPathConvert(detailsDialog.item.image)" >
-              <div slot="error" class="image-slot">
-                <img src="images/noImg.png"/>
-              </div>
-            </el-image>
-            <div class="title">{{detailsDialog.item.name}}</div>
-            <div class="content">{{detailsDialog.item.description}}</div>
-          </div>
-          <div class="divNum">
-            <div class="left">
-              <span>￥</span><span>{{detailsDialog.item.price/100}}</span>
-            </div>
-            <div class="right">
-                <div class="divSubtract" v-if="detailsDialog.item.number > 0">
-                  <img src="images/subtract.png" @click="subtractCart(detailsDialog.item)"/>
-                </div>
-                <div class="divDishNum">{{detailsDialog.item.number}}</div>
-                <div class="divTypes" v-if="detailsDialog.item.flavors && detailsDialog.item.flavors.length > 0 && !detailsDialog.item.number " @click ="chooseFlavorClick(detailsDialog.item)">选择规格</div>
-                <div class="divAdd" v-else>
-                  <img src="images/add.png" @click="addCart(detailsDialog.item)"/>
-                </div>
-            </div>
-          </div>
-          <div class="detailsDialogClose" @click="detailsDialog.show = false">
-            <img src="images/close.png"/>
-          </div>
-        </van-dialog>
-        <van-dialog v-model="setMealDialog.show" 
-                    :show-confirm-button="false" 
-                    class="setMealDetailsDialog" 
-                    ref="setMealDetailsDialogd"
-                    v-if="setMealDialog.show"
-                    >
-          <div class="divContainer">
-            <div class="title">{{setMealDialog.item.name}}</div>
-              <div class="item" v-for="(item,index) in setMealDialog.item.list" :key="index">
-                <el-image :src="imgPathConvert(item.image)">
-                  <div slot="error" class="image-slot">
-                    <img src="images/noImg.png"/>
-                  </div>
-                </el-image>
-                <div class="divSubTitle">{{item.name + '(' + item.copies + '份)' }}
-                  <div class="divPrice">
-                    <span>￥</span><span>{{item.price/100}}</span>
-                  </div>
-                </div>                
-                <div class="content">{{item.description}}</div>
-              </div>
-            </div>
-          <div class="divNum">
-              <div class="left">
-                <span>￥</span><span>{{setMealDialog.item.price/100}}</span>
-              </div>
-              <div class="right">
-                  <div class="divSubtract" v-if="setMealDialog.item.number > 0">
-                    <img src="images/subtract.png" @click="subtractCart(setMealDialog.item)"/>
-                  </div>
-                  <div class="divDishNum">{{setMealDialog.item.number}}</div>
-                  <div class="divAdd" v-if="setMealDialog.item.number">
-                    <img src="images/add.png" @click="addCart(setMealDialog.item)"/>
-                  </div>
-                  <div class="addCart"  @click="addCart(setMealDialog.item)" v-if="!setMealDialog.item.number">加入购物车</div>
-              </div>
-          </div>
-          <div class="detailsDialogClose" @click="setMealDialog.show = false">
-            <img src="images/close.png"/>
-          </div>
-        </van-dialog>
     </div>
         <!-- 开发环境版本，包含了有帮助的命令行警告 -->
-        <script src="../backend/plugins/vue/vue.js"></script>
+        <script src="../app/plugins/vue/vue.js"></script>
         <!-- 引入组件库 -->
-        <script src="../backend/plugins/element-ui/index.js"></script>
+        <script src="../app/plugins/element-ui/index.js"></script>
         <!-- 引入vant样式 -->
         <script src="js/vant.min.js"></script>
         <!-- 引入axios -->
-        <script src="../backend/plugins/axios/axios.min.js"></script>
+        <script src="../app/plugins/axios/axios.min.js"></script>
         <script src="js/request.js"></script>
         <script src="js/common.js"></script>
         <script src="api/main.js"></script>

@@ -34,6 +34,7 @@
   box-sizing: border-box;
   padding: 14rem 0 0 8rem;
 }
+
 #main .divTitle .divStatic {
   display: flex;
 }
@@ -47,7 +48,7 @@
 }
 
 #main .divTitle .divStatic .divDesc .divName {
-  width: 90rem;
+  width: 200rem;
   height: 25rem;
   opacity: 1;
   font-size: 18rem;
@@ -57,6 +58,7 @@
   color: #20232a;
   line-height: 25rem;
 }
+
 
 #main .divTitle .divStatic .divDesc .divSend {
   opacity: 1;
