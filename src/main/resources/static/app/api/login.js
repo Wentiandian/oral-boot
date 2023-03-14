@@ -8,7 +8,7 @@ function loginApi(data) {
 
 function sendMsgApi(data){
     this.$axios({
-        'url':'/user/sendMsg',
+        'url':'/app/user/sendMsg',
         'method':'post',
         data
     })

@@ -21,7 +21,6 @@ public class PatientEntity implements Serializable {
     /**
      * 患者ID
      */
-    @TableId
     private Long patientId;
 
     /**

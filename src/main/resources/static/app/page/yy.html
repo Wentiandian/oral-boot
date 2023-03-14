@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,user-scalable=no,minimal-ui">
+    <title>口腔医院挂号预约平台</title>
+    <link rel="icon" href="../images/favico.ico">
+    <!--不同屏幕尺寸根字体设置-->
+    <script src="../js/base.js"></script>
+    <!--element-ui的样式-->
+    <link rel="stylesheet" href="../plugins/element-ui/index.css" />
+    <!--引入vant样式-->
+    <link rel="stylesheet" href="../styles/vant.min.css"/>
+    <!-- 引入样式  -->
+    <link rel="stylesheet" href="../styles/index.css" />
+    <!--本页面内容的样式-->
+    <link rel="stylesheet" href="../styles/main.css" />
+</head>
+<style>
+    /* 父容器样式 */
+    .container{
+        margin:70px auto; width:200px; height:150px;
+    }
+    /* 子容器样式 */
+    .son{
+        margin:0 auto;height: 80px;
+    }
+</style>
+<body>
+<div id="main" class="app">
+    <div class="divHead">
+        <img src="../images/user.png"/>
+    </div>
+    <div class="divTitle">
+        <div class="divStatic">
+            <img src="../images/logo.png" class="logo"/>
+            <div class="divDesc">
+                <div class="divName">口腔医院挂号预约平台</div>
+            </div>
+        </div>
+        <div class="divDesc">189e93
+            简介: 口腔医院挂号预约平台。e8f7f6
+        </div>
+    </div>
+    <div class="container">
+        <div class="son">
+            <el-select v-model="form.deptId" placeholder="请选择预约科室" type="primary">
+                <el-option
+                        v-for="item in deptList"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value">
+                </el-option>
+            </el-select>
+        </div>
+        <div class="son">
+            <el-select v-model="form.docId" placeholder="请选择预约医生" type="primary">
+                <el-option
+                        v-for="item in docList"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value">
+                </el-option>
+            </el-select>
+        </div>
+        <div class="son">
+            <div class="block">
+                <el-date-picker v-model="bookingTime" type="datetime" placeholder="选择日期时间"></el-date-picker>
+            </div>
+        </div>
+        <div class="son">
+            <el-button type="primary" round icon="el-icon-message">立即预约</el-button>
+        </div>
+    </div>
+
+</div>
+<!-- 开发环境版本，包含了有帮助的命令行警告 -->
+<script src="../plugins/vue/vue.js"></script>
+<!-- 引入组件库 -->
+<script src="../plugins/element-ui/index.js"></script>
+<!-- 引入vant样式 -->
+<script src="../js/vant.min.js"></script>
+<!-- 引入axios -->
+<script src="../plugins/axios/axios.min.js"></script>
+<script src="../js/request.js"></script>
+<script src="../js/common.js"></script>
+<script src="../api/main.js"></script>
+</body>
+<script>
+    new Vue({
+        el:'#main',
+        data(){
+            return {
+                form:{
+                    deptId:'',
+                    docId:''
+                },
+                deptList:[],
+                docList:[],
+                bookingTime:'',
+            }
+        },
+        created(){
+        },
+        mounted(){
+            this.initData()
+        },
+        methods:{
+            //初始化数据
+            initData(){
+            }
+        }
+    })
+</script>
+</html>

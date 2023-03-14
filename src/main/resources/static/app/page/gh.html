@@ -21,7 +21,7 @@
 <style>
   /* 父容器样式 */
   .container{
-    margin:70px auto; width:100px; height:150px;
+    margin:300px auto; width:200px; height:150px;
   }
   /* 子容器样式 */
   .son{
@@ -31,7 +31,7 @@
 <body>
 <div id="main" class="app">
   <div class="divHead">
-    <img src="../images/user.png" @click="toUserPage"/>
+    <img src="../images/user.png"/>
   </div>
   <div class="divTitle">
     <div class="divStatic">
@@ -46,13 +46,10 @@
   </div>
   <div class="container">
     <div class="son">
-      <el-button type="primary" round icon="el-icon-star-off">立即挂号</el-button>
+      <el-input placeholder=" 请输入姓名" v-model="form.patientName"  maxlength='20'></el-input>
     </div>
     <div class="son">
-      <el-button type="primary" round icon="el-icon-message">立即预约</el-button>
-    </div>
-    <div class="son">
-      <el-button type="primary" round icon="el-icon-tickets">电子病例</el-button>
+      <el-button type="primary" round icon="el-icon-message" @click="saveGhInfo">立即挂号</el-button>
     </div>
   </div>
 
@@ -74,29 +71,10 @@
     el:'#main',
     data(){
       return {
-        //左边菜品类别index
+        form:{
+          patientName:''
+        },
         activeType:0,
-        categoryList:[],
-        categoryId:undefined,
-        dishList:[],
-        cartData:[],
-        dialogFlavor:{
-          name:'',
-          flavors:[],
-          dishId:undefined,
-          price:undefined,
-          show:false,
-          image:''
-        },
-        cartDialogShow:false,
-        detailsDialog:{
-          show:false,
-          item:{image:''}
-        },
-        setMealDialog:{
-          show:false,
-          item:{}
-        },
       }
     },
     created(){
@@ -105,30 +83,8 @@
       this.initData()
     },
     methods:{
-      //初始化数据
-      initData(){
-        Promise.all([categoryListApi(),cartListApi({})]).then(res=>{
-          //获取分类数据
-          if(res[0].code === 1){
-            this.categoryList = res[0].data
-            if(Array.isArray(res[0].data) && res[0].data.length > 0){
-              this.categoryId = res[0].data[0].id
-              if(res[0].data[0].type === 1){
-                this.getDishList()
-              }else{
-                this.getSetmealData()
-              }
-            }
-          }else{
-            this.$notify({ type:'warning', message:res[0].msg});
-          }
-          //获取菜品数据
-          if(res[1].code === 1){
-            this.cartData = res[1].data
-          }else{
-            this.$notify({ type:'warning', message:res[1].msg});
-          }
-        })
+      saveGhInfo(){
+          saveGhInfo(this.form)
       }
     }
   })

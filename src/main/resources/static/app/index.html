@@ -21,17 +21,23 @@
   <style>
     /* 父容器样式 */
     .container{
-      margin:70px auto; width:100px; height:150px;
+      margin:50px auto; width:180px; height:200px;
     }
     /* 子容器样式 */
     .son{
-      margin:0 auto;height: 80px;
+      margin-top:85px; height: 30px;margin-left: 30px;
+    }
+    .son1{
+      margin-top:10px; height: 80px;
+    }
+    .son1 button{
+      margin-left: 50px;margin-top: 10px;
     }
   </style>
   <body>
     <div id="main" class="app">
       <div class="divHead">
-        <img src="images/user.png" @click="toUserPage"/>
+        <img src="images/user.png"/>
       </div>
       <div class="divTitle">
         <div class="divStatic">
@@ -40,19 +46,33 @@
             <div class="divName">口腔医院挂号预约平台</div>
           </div>
         </div>
-        <div class="divDesc">189e93
-          简介: 口腔医院挂号预约平台。e8f7f6
+        <div class="divDesc">
+          简介: 口腔医院挂号预约平台。
         </div>
       </div>
       <div class="container">
-        <div class="son">
-          <el-button type="primary" round icon="el-icon-star-off" @click="toGhPage">立即挂号</el-button>
+        <div class="son1" v-if="flag">
+          <p style="margin: 10px 0 10px 0">你还未注册信息，请完善你的信息</p>
+          <el-input placeholder="请输入真实姓名" v-model="form.patientName" type="primary"></el-input>
+          <el-input placeholder="请输入年龄" v-model="form.age" type="primary"></el-input>
+          <el-input placeholder="请输入Email" v-model="form.email" type="primary"></el-input>
+          <el-select v-model="form.sex" placeholder="请选择性别" type="primary">
+            <el-option
+                    v-for="item in options"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+            </el-option>
+          </el-select>
+          <el-button type="primary" round @click="saveUser">提交</el-button>
         </div>
-        <div class="son">
-          <el-button type="primary" round icon="el-icon-message">立即预约</el-button>
-        </div>
-        <div class="son">
-          <el-button type="primary" round icon="el-icon-tickets">电子病例</el-button>
+        <div v-if="!flag">
+          <div class="son">
+            <el-button type="primary" round icon="el-icon-star-off" @click="toGhPage">立即挂号</el-button>
+          </div>
+          <div class="son">
+            <el-button type="primary" round icon="el-icon-message" @click="toYyPage">立即预约</el-button>
+          </div>
         </div>
       </div>
 
@@ -74,61 +94,29 @@
           el:'#main',
           data(){
             return {
-              //左边菜品类别index
-              activeType:0,
-              categoryList:[],
-              categoryId:undefined,
-              dishList:[],
-              cartData:[],
-              dialogFlavor:{
-                name:'',
-                flavors:[],
-                dishId:undefined,
-                price:undefined,
-                show:false,
-                image:''
+              form:{
+                age:'',
+                email:'',
+                patientName:'',
+                sex:''
               },
-              cartDialogShow:false,
-              detailsDialog:{
-                show:false,
-                item:{image:''}
-              },
-              setMealDialog:{
-                show:false,
-                item:{}
-              },
+              options:[{label:'男',value:'1'},{label:'女',value: '0'}],
+              flag: true
             }
           },
           created(){
           },
           mounted(){
-            this.initData()
           },
           methods:{
-            //初始化数据
-            initData(){
-              Promise.all([categoryListApi(),cartListApi({})]).then(res=>{
-                //获取分类数据
-                if(res[0].code === 1){
-                  this.categoryList = res[0].data
-                  if(Array.isArray(res[0].data) && res[0].data.length > 0){
-                    this.categoryId = res[0].data[0].id
-                    if(res[0].data[0].type === 1){
-                      this.getDishList()
-                    }else{
-                      this.getSetmealData()
-                    }
-                  }
-                }else{
-                  this.$notify({ type:'warning', message:res[0].msg});
-                }
-                //获取菜品数据
-                if(res[1].code === 1){
-                this.cartData = res[1].data
-                }else{
-                  this.$notify({ type:'warning', message:res[1].msg});
-                }
-              })
+            async saveUser() {
+              const res =  await save(this.form)
+              if(res.code === 0){
+                this.$message({message: '保存成功', type: 'success'})
+                this.flag = false
+              } else {
+                this.$message.error(res.msg)
+              }
             },
 
             toGhPage(){
@@ -140,13 +128,7 @@
             toYyPage(){
               sessionStorage.setItem("flg","0");
               window.requestAnimationFrame(()=>{
-                window.location.href= 'page/user.html'
-              })
-            },
-            toBlPage(){
-              sessionStorage.setItem("flg","0");
-              window.requestAnimationFrame(()=>{
-                window.location.href= 'page/user.html'
+                window.location.href= 'page/yy.html'
               })
             }
           }
