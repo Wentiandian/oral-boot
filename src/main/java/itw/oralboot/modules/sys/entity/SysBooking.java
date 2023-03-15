@@ -2,6 +2,7 @@ package itw.oralboot.modules.sys.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import java.io.Serializable;
 import java.util.Date;
@@ -21,6 +22,7 @@ public class SysBooking implements Serializable {
      * 病人ID
      */
     @TableId
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Long patientId;
 
     /**

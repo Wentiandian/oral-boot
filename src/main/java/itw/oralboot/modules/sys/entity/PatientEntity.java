@@ -3,6 +3,7 @@ package itw.oralboot.modules.sys.entity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import itw.oralboot.common.validator.group.AddGroup;
 import itw.oralboot.common.validator.group.UpdateGroup;
 import lombok.Data;
@@ -21,6 +22,7 @@ public class PatientEntity implements Serializable {
     /**
      * 患者ID
      */
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Long patientId;
 
     /**

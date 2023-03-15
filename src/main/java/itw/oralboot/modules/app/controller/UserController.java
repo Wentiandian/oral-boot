@@ -80,7 +80,6 @@ public class UserController extends AbstractController{
                 //生成id
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSSS");
                 Long id = Long.valueOf(sdf.format(System.currentTimeMillis()));
-                AbstractController.setCurrentId(id);
                 patient.setPatientId(id);
                 SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z");
                 Date date = new Date(System.currentTimeMillis());
@@ -89,10 +88,11 @@ public class UserController extends AbstractController{
                 patient.setStatus(1);
                 //用户状态默认为1
                 patientService.save(patient);
+                //将用户id保存到session
+                session.setAttribute("id",id);
+            }else{
+                session.setAttribute("id",patient.getPatientId());
             }
-            AbstractController.setCurrentId(patient.getPatientId());
-            //将用户id保存到session
-            session.setAttribute("id",AbstractController.getCurrentId());
             return R.ok().put("user",patient);
         }
 

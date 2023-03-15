@@ -23,13 +23,8 @@ import java.util.Map;
 public class SysYyController extends AbstractController{
 
     @Autowired
-    private SysDeptService sysDeptService;
-
-    @Autowired
     private SysBookingService sysBookingService;
 
-    @Autowired
-    private DocDeptService docDeptService;
 
     /**
      * 查看所有预约信息
