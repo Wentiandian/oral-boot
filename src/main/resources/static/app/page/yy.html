@@ -49,7 +49,7 @@
     </div>
     <div class="container">
         <div class="son">
-            <el-select v-model="form.deptId" placeholder="请选择预约科室" type="primary">
+            <el-select v-model="form.deptId" placeholder="请选择预约科室" type="primary" clearable>
                 <el-option
                         v-for="item in deptList"
                         :key="item.value"
@@ -59,7 +59,7 @@
             </el-select>
         </div>
         <div class="son">
-            <el-select v-model="form.docId" placeholder="请选择预约医生" type="primary">
+            <el-select v-model="form.docId" placeholder="请选择预约医生" type="primary" clearable>
                 <el-option
                         v-for="item in docList"
                         :key="item.value"
@@ -70,18 +70,18 @@
         </div>
         <div class="son">
             <div class="block">
-                <el-date-picker v-model="form.bookingTime" type="datetime" placeholder="选择日期时间"></el-date-picker>
+                <el-date-picker v-model="form.bookingTime" type="datetime" placeholder="选择日期时间" clearable value-format="yyyy-MM-dd HH:mm:ss"></el-date-picker>
             </div>
         </div>
         <div class="son">
-            <el-input placeholder="请输入真实姓名" v-model="form.patientName"  maxlength='20'></el-input>
+            <el-input placeholder="请输入真实姓名" v-model="form.patientName"  maxlength='20' clearable></el-input>
         </div>
         <div class="son">
             <el-button type="primary" round @click="saveInfo">立即提交</el-button>
         </div>
     </div>
-
 </div>
+
 <!-- 开发环境版本，包含了有帮助的命令行警告 -->
 <script src="../plugins/vue/vue.js"></script>
 <!-- 引入组件库 -->
@@ -120,6 +120,7 @@
             }
             this.check()
             this.getDeptList()
+            this.getDocList()
         },
         mounted(){
         },
@@ -133,11 +134,16 @@
                     window.location.href= '../index.html'
                 }
             },
-            //保持预约信息
+            //保存预约信息
             async saveInfo(){
                 const res = await saveYy(this.form)
                 if(res.code === 0){
-                    console.log(res)
+                    this.$message({message: '预约成功', type: 'success'})
+                    sessionStorage.setItem("id",this.form.patientId)
+                    window.location.href= '../index.html'
+                }
+                else {
+                    this.$notify.error(res.msg)
                 }
             },
             //获取科室列表
@@ -145,25 +151,29 @@
                 const res = await getDeptList()
                 if (res && res.code === 0){
                     let deptMap = {}
-                    deptMap = {
-                        'label': res.list[i].deptName,
-                        'value': res.list[i].deptId
+                    for (let i = 0; i < res.list.length; i++) {
+                        deptMap = {
+                            'label': res.list[i].deptName,
+                            'value': res.list[i].deptId
+                        }
+                        this.deptList.push(deptMap)
                     }
-                    this.deptList.push(deptMap)
                 } else {
                     this.$message({ message: res.msg })
                 }
             },
             //获取医生列表
             async getDocList () {
-                const res = await getDocList()
+                const res = await getRoleList('1')
                 if (res && res.code === 0){
                     let docMap = {}
-                    docMap = {
-                        'label': res.list[i].docName,
-                        'value': res.list[i].userId
+                    for (let i = 0; i < res.list.length; i++) {
+                        docMap = {
+                            'label': res.list[i].name,
+                            'value': res.list[i].userId
+                        }
+                        this.docList.push(docMap)
                     }
-                    this.docList.push(docMap)
                 } else {
                     this.$message({ message: res.msg })
                 }

@@ -4,10 +4,8 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import itw.oralboot.common.utils.R;
 import itw.oralboot.modules.sys.entity.SysGhEntity;
 import itw.oralboot.modules.sys.service.SysGhService;
-import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -31,7 +29,6 @@ public class UserGhController extends AbstractController{
      */
     @PostMapping("/save")
     public R saveGhInfo(@RequestBody SysGhEntity ghEntity) throws ParseException {
-        logger.info(ghEntity.toString());
         AbstractController.setCurrentId(ghEntity.getPatientId());
         SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z");
         Date date = new Date(System.currentTimeMillis());

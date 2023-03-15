@@ -86,7 +86,7 @@
       let id = sessionStorage.getItem("id")
       this.form.patientId = id
       if(id === '0' || id === null){
-        this.$notify({ type:'warning', message:'还没登录请登录后再访问'});
+        this.$message({ type:'warning', message:'还没登录请登录后再访问'});
         window.location.href= 'page/login.html'
       }
       this.check()
@@ -98,7 +98,7 @@
         const res = await saveGh(this.form)
         console.log(res)
         if(res.code === 0){
-          this.$notify({message: '挂号成功', type: 'success'})
+          this.$message({message: '挂号成功', type: 'success'})
           sessionStorage.setItem("id",this.form.patientId)
           window.location.href= '../index.html'
         }else {
@@ -109,7 +109,7 @@
         const res = await getGhInfo(this.form.patientId)
         console.log(res)
         if(res.code === 200){
-          this.$notify({message: res.msg, type: 'success'})
+          this.$message({message: res.msg, type: 'success'})
           sessionStorage.setItem("id",this.form.patientId)
           window.location.href= '../index.html'
         }

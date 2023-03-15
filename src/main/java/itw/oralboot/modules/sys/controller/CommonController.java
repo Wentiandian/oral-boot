@@ -41,6 +41,12 @@ public class CommonController extends AbstractController{
     @Autowired
     private SysRoleService sysRoleService;
 
+    @Autowired
+    private SysUserRoleService sysUserRoleService;
+
+    @Autowired
+    private SysUserService sysUserService;
+
     private String basePath="E:/work/oral-files/";
 
     /**
@@ -207,5 +213,25 @@ public class CommonController extends AbstractController{
     public R roleList(){
         List<SysRoleEntity> sysRoleEntityList = sysRoleService.list();
         return R.ok().put("list",sysRoleEntityList);
+    }
+
+    /**
+     * 获取角色列表
+     * @param roleId
+     * @return
+     */
+    @GetMapping("/roleList/{roleId}")
+    public R docList(@PathVariable String roleId){
+        //通过角色ID查询所有的该角色用户ID
+        LambdaQueryWrapper<SysUserRoleEntity> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(SysUserRoleEntity::getRoleId,roleId);
+        List<SysUserRoleEntity> sysUserRoleEntityList = sysUserRoleService.list(queryWrapper);
+        //获取用户信息
+        List<SysUserEntity> userList = sysUserRoleEntityList.stream().map((item)->{
+            SysUserEntity user = sysUserService.getById(item.getUserId());
+            return user;
+        }).collect(Collectors.toList());
+
+        return R.ok().put("list",userList);
     }
 }
