@@ -6,9 +6,9 @@ function  save(data){
     })
 }
 
-function  saveGhInfo(data){
+function  saveGh(data){
     return $axios({
-        'url':'/app/user/saveUser',
+        'url':'/app/gh/info',
         'method':'post',
         data
     })

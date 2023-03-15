@@ -90,8 +90,8 @@ public class UserController extends AbstractController{
                 //用户状态默认为1
                 patientService.save(patient);
             }
+            AbstractController.setCurrentId(patient.getPatientId());
             //将用户id保存到session
-            System.out.println(AbstractController.getCurrentId());
             session.setAttribute("id",AbstractController.getCurrentId());
             return R.ok().put("user",patient);
         }
@@ -108,7 +108,7 @@ public class UserController extends AbstractController{
      * @return
      */
     @PostMapping("/saveUser")
-    public R saveUser(@RequestBody PatientEntity patient, HttpSession session) throws ParseException {
+    public R saveUser(@RequestBody PatientEntity patient, HttpSession session) {
         Long id = (Long) session.getAttribute("id");
         patient.setPatientId(id);
         System.out.println(id);

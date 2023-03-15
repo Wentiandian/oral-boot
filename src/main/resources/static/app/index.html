@@ -30,6 +30,9 @@
     .son1{
       margin-top:10px; height: 80px;
     }
+    .son2{
+      margin-left: 30px; margin-top:200px; height: 80px;
+    }
     .son1 button{
       margin-left: 50px;margin-top: 10px;
     }
@@ -74,6 +77,9 @@
             <el-button type="primary" round icon="el-icon-message" @click="toYyPage">立即预约</el-button>
           </div>
         </div>
+        <div class="son2">
+          <el-button type="primary" round @click="loginOut">退出登录</el-button>
+        </div>
       </div>
 
     </div>
@@ -94,6 +100,7 @@
           el:'#main',
           data(){
             return {
+              id:'',
               form:{
                 age:'',
                 email:'',
@@ -101,35 +108,51 @@
                 sex:''
               },
               options:[{label:'男',value:'1'},{label:'女',value: '0'}],
-              flag: true
+              flag: false
             }
           },
           created(){
+            let id = sessionStorage.getItem('id')
+            console.log(id)
+            console.log(sessionStorage.getItem('flag'))
+            this.id = id
+            if(id === '0'){
+              window.location.href= 'page/login.html'
+              this.$notify({ type:'warning', message:'还没登录请登录后再访问'});
+            }
+            if(sessionStorage.getItem('flag') === '0'){
+              this.flag = true
+            }
           },
           mounted(){
           },
           methods:{
             async saveUser() {
+              sessionStorage.setItem('id',this.id)
               const res =  await save(this.form)
               if(res.code === 0){
-                this.$message({message: '保存成功', type: 'success'})
+                this.$notify({message: '保存成功', type: 'success'})
                 this.flag = false
               } else {
-                this.$message.error(res.msg)
+                this.$notify.error(res.msg)
               }
             },
 
             toGhPage(){
-              sessionStorage.setItem("flg","0");
+              sessionStorage.setItem("id",this.id);
               window.requestAnimationFrame(()=>{
                 window.location.href= 'page/gh.html'
               })
             },
             toYyPage(){
-              sessionStorage.setItem("flg","0");
+              sessionStorage.setItem("id",this.id);
               window.requestAnimationFrame(()=>{
                 window.location.href= 'page/yy.html'
               })
+            },
+            loginOut(){
+              sessionStorage.setItem('id',"0")
+              window.location.href= 'page/login.html'
             }
           }
       })

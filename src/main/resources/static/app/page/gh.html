@@ -21,11 +21,14 @@
 <style>
   /* 父容器样式 */
   .container{
-    margin:300px auto; width:200px; height:150px;
+    margin:50px auto; width:200px; height:150px;
   }
   /* 子容器样式 */
   .son{
     margin:0 auto;height: 80px;
+  }
+  .son button{
+    margin-left: 40px;margin-top: 10px;
   }
 </style>
 <body>
@@ -40,16 +43,17 @@
         <div class="divName">口腔医院挂号预约平台</div>
       </div>
     </div>
-    <div class="divDesc">189e93
-      简介: 口腔医院挂号预约平台。e8f7f6
+    <div class="divDesc">
+      简介: 口腔医院挂号预约平台。
     </div>
   </div>
+  <h1 style="margin-left: 140px;margin-top: 60px;font-size: 22rem;">挂号</h1>
   <div class="container">
     <div class="son">
       <el-input placeholder=" 请输入姓名" v-model="form.patientName"  maxlength='20'></el-input>
     </div>
     <div class="son">
-      <el-button type="primary" round icon="el-icon-message" @click="saveGhInfo">立即挂号</el-button>
+      <el-button type="primary" round icon="el-icon-message" @click="saveInfo">立即提交</el-button>
     </div>
   </div>
 
@@ -72,19 +76,33 @@
     data(){
       return {
         form:{
+          patientId:'',
           patientName:''
         },
         activeType:0,
       }
     },
     created(){
+      let id = sessionStorage.getItem("id")
+      this.form.patientId = id
+      if(id === '0'){
+        this.$notify({ type:'warning', message:'还没登录请登录后再访问'});
+        window.location.href= 'page/login.html'
+      }
     },
     mounted(){
-      this.initData()
     },
     methods:{
-      saveGhInfo(){
-          saveGhInfo(this.form)
+      async saveInfo() {
+        const res = await saveGh(this.form)
+        console.log(res)
+        if(res.code === 0){
+          this.$notify({message: '挂号成功', type: 'success'})
+          sessionStorage.setItem("id",this.form.patinetId)
+          window.location.href= '../index.html'
+        }else {
+          this.$notify.error(res.msg)
+        }
       }
     }
   })

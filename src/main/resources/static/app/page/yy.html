@@ -27,6 +27,9 @@
     .son{
         margin:0 auto;height: 80px;
     }
+    .son button{
+        margin-left: 40px;margin-top: 10px;
+    }
 </style>
 <body>
 <div id="main" class="app">
@@ -71,7 +74,7 @@
             </div>
         </div>
         <div class="son">
-            <el-button type="primary" round icon="el-icon-message">立即预约</el-button>
+            <el-button type="primary" round >立即提交</el-button>
         </div>
     </div>
 
@@ -105,12 +108,9 @@
         created(){
         },
         mounted(){
-            this.initData()
         },
         methods:{
-            //初始化数据
-            initData(){
-            }
+
         }
     })
 </script>

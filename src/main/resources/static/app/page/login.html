@@ -74,8 +74,14 @@
                         this.loading = true
                         const res = await loginApi({mobile:this.form.mobile,code:this.form.code})
                         this.loading = false
+                        console.log(res)
                         if(res.code === 0){
-                            sessionStorage.setItem("id",this.form.mobile)
+                            sessionStorage.setItem("id",res.user.patientId)
+                            if(res.user.patientName !== null){
+                                sessionStorage.setItem("flag",'1')
+                            }else{
+                                sessionStorage.setItem("flag",'0')
+                            }
                             window.requestAnimationFrame(()=>{
                                 window.location.href= '../index.html'
                             })                           
