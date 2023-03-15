@@ -1,13 +1,12 @@
 package itw.oralboot.modules.app.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import itw.oralboot.common.utils.R;
 import itw.oralboot.modules.sys.entity.SysGhEntity;
 import itw.oralboot.modules.sys.service.SysGhService;
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -30,7 +29,7 @@ public class UserGhController extends AbstractController{
      * @return
      * @throws ParseException
      */
-    @PostMapping("/info")
+    @PostMapping("/save")
     public R saveGhInfo(@RequestBody SysGhEntity ghEntity) throws ParseException {
         logger.info(ghEntity.toString());
         AbstractController.setCurrentId(ghEntity.getPatientId());
@@ -42,5 +41,23 @@ public class UserGhController extends AbstractController{
         ghEntity.setStatus(1);
         sysGhService.save(ghEntity);
         return R.ok();
+    }
+
+    /**
+     * 检查是否已挂过号
+     * @param patientId
+     * @return
+     */
+    @GetMapping("/info/{patientId}")
+    public R getGhInfo(@PathVariable Long patientId){
+        LambdaQueryWrapper<SysGhEntity> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(patientId != null,SysGhEntity::getPatientId,patientId)
+                .eq(SysGhEntity::getStatus,1);
+        SysGhEntity sysGhEntity = sysGhService.getOne(queryWrapper);
+        if(sysGhEntity != null){
+            return R.error(200,"已挂过号，无需再次挂号");
+        }else {
+            return R.ok();
+        }
     }
 }

@@ -70,11 +70,14 @@
         </div>
         <div class="son">
             <div class="block">
-                <el-date-picker v-model="bookingTime" type="datetime" placeholder="选择日期时间"></el-date-picker>
+                <el-date-picker v-model="form.bookingTime" type="datetime" placeholder="选择日期时间"></el-date-picker>
             </div>
         </div>
         <div class="son">
-            <el-button type="primary" round >立即提交</el-button>
+            <el-input placeholder="请输入真实姓名" v-model="form.patientName"  maxlength='20'></el-input>
+        </div>
+        <div class="son">
+            <el-button type="primary" round @click="saveInfo">立即提交</el-button>
         </div>
     </div>
 
@@ -97,20 +100,74 @@
         data(){
             return {
                 form:{
+                    patientId:'',
+                    patientName:'',
                     deptId:'',
-                    docId:''
+                    docId:'',
+                    bookingTime:''
                 },
                 deptList:[],
                 docList:[],
-                bookingTime:'',
+
             }
         },
         created(){
+            let id = sessionStorage.getItem("id")
+            this.form.patientId = id
+            if(id === '0' || id === null){
+                this.$notify({ type:'warning', message:'还没登录请登录后再访问'});
+                window.location.href= 'page/login.html'
+            }
+            this.check()
+            this.getDeptList()
         },
         mounted(){
         },
         methods:{
-
+            async check(){
+                const res = await getYyInfo(this.form.patientId)
+                console.log(res)
+                if(res.code === 200){
+                    this.$notify({message: res.msg, type: 'success'})
+                    sessionStorage.setItem("id",this.form.patientId)
+                    window.location.href= '../index.html'
+                }
+            },
+            //保持预约信息
+            async saveInfo(){
+                const res = await saveYy(this.form)
+                if(res.code === 0){
+                    console.log(res)
+                }
+            },
+            //获取科室列表
+            async getDeptList () {
+                const res = await getDeptList()
+                if (res && res.code === 0){
+                    let deptMap = {}
+                    deptMap = {
+                        'label': res.list[i].deptName,
+                        'value': res.list[i].deptId
+                    }
+                    this.deptList.push(deptMap)
+                } else {
+                    this.$message({ message: res.msg })
+                }
+            },
+            //获取医生列表
+            async getDocList () {
+                const res = await getDocList()
+                if (res && res.code === 0){
+                    let docMap = {}
+                    docMap = {
+                        'label': res.list[i].docName,
+                        'value': res.list[i].userId
+                    }
+                    this.docList.push(docMap)
+                } else {
+                    this.$message({ message: res.msg })
+                }
+            }
         }
     })
 </script>

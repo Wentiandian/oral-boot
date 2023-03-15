@@ -50,7 +50,7 @@
   <h1 style="margin-left: 140px;margin-top: 60px;font-size: 22rem;">挂号</h1>
   <div class="container">
     <div class="son">
-      <el-input placeholder=" 请输入姓名" v-model="form.patientName"  maxlength='20'></el-input>
+      <el-input placeholder="请输入真实姓名" v-model="form.patientName"  maxlength='20'></el-input>
     </div>
     <div class="son">
       <el-button type="primary" round icon="el-icon-message" @click="saveInfo">立即提交</el-button>
@@ -85,10 +85,11 @@
     created(){
       let id = sessionStorage.getItem("id")
       this.form.patientId = id
-      if(id === '0'){
+      if(id === '0' || id === null){
         this.$notify({ type:'warning', message:'还没登录请登录后再访问'});
         window.location.href= 'page/login.html'
       }
+      this.check()
     },
     mounted(){
     },
@@ -98,10 +99,19 @@
         console.log(res)
         if(res.code === 0){
           this.$notify({message: '挂号成功', type: 'success'})
-          sessionStorage.setItem("id",this.form.patinetId)
+          sessionStorage.setItem("id",this.form.patientId)
           window.location.href= '../index.html'
         }else {
           this.$notify.error(res.msg)
+        }
+      },
+      async check(){
+        const res = await getGhInfo(this.form.patientId)
+        console.log(res)
+        if(res.code === 200){
+          this.$notify({message: res.msg, type: 'success'})
+          sessionStorage.setItem("id",this.form.patientId)
+          window.location.href= '../index.html'
         }
       }
     }

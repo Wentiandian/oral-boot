@@ -116,7 +116,7 @@
             console.log(id)
             console.log(sessionStorage.getItem('flag'))
             this.id = id
-            if(id === '0'){
+            if(id === '0' || id === null){
               window.location.href= 'page/login.html'
               this.$notify({ type:'warning', message:'还没登录请登录后再访问'});
             }
@@ -133,6 +133,7 @@
               if(res.code === 0){
                 this.$notify({message: '保存成功', type: 'success'})
                 this.flag = false
+                sessionStorage.setItem('flag','1')
               } else {
                 this.$notify.error(res.msg)
               }

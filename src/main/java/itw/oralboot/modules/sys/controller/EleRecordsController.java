@@ -25,9 +25,6 @@ public class EleRecordsController extends AbstractController{
     private EleRecordsService eleRecordsService;
 
     @Autowired
-    private PatientService patientService;
-
-    @Autowired
     private SysFileService sysFileService;
 
     @Autowired
