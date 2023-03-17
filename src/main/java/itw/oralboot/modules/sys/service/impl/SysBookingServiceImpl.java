@@ -40,12 +40,12 @@ public class SysBookingServiceImpl extends ServiceImpl<SysBookingDao, SysBooking
             endDate = "9999-12-31";
         }
 
-        if(status.equals("")){
-            List<SysBookingForm> sysBookingFormList = sysBookingDao.queryBookingList(current-1,pageSize,"%"+patientName+"%","%"+deptName+"%","%"+name+"%",starDate,endDate);
-            return sysBookingFormList;
+        List<SysBookingForm> sysBookingFormList;
+        if(status == null || status.equals("")){
+            sysBookingFormList = sysBookingDao.queryBookingList(current - 1, pageSize, "%" + patientName + "%", "%" + deptName + "%", "%" + name + "%", starDate, endDate);
         }else {
-            List<SysBookingForm> sysBookingFormList = sysBookingDao.queryBookingStatusList(current-1,pageSize,"%"+patientName+"%","%"+deptName+"%","%"+name+"%",starDate,endDate,status);
-            return sysBookingFormList;
+            sysBookingFormList = sysBookingDao.queryBookingStatusList(current - 1, pageSize, "%" + patientName + "%", "%" + deptName + "%", "%" + name + "%", starDate, endDate, status);
         }
+        return sysBookingFormList;
     }
 }
