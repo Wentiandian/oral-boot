@@ -1,5 +1,6 @@
 package itw.oralboot.modules.sys.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
@@ -30,5 +31,11 @@ public class DrugPreEntity implements Serializable {
      *药品数量
      */
     private Integer drugNum;
+
+    /**
+     * 对应药品名
+     */
+    @TableField(exist=false)
+    private String drugName;
 
 }

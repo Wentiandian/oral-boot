@@ -31,7 +31,7 @@
       margin-top:10px; height: 80px;
     }
     .son2{
-      margin-left: 30px; margin-top:200px; height: 80px;
+      margin-left: 30px; margin-top:100px; height: 80px;
     }
     .son1 button{
       margin-left: 50px;margin-top: 10px;
@@ -76,6 +76,9 @@
           <div class="son">
             <el-button type="primary" round icon="el-icon-message" @click="toYyPage">立即预约</el-button>
           </div>
+          <div class="son">
+            <el-button type="primary" round icon="el-icon-document-checked" @click="toBlPage">电子病历</el-button>
+          </div>
         </div>
         <div class="son2">
           <el-button type="primary" round @click="loginOut">退出登录</el-button>
@@ -117,8 +120,8 @@
             console.log(sessionStorage.getItem('flag'))
             this.id = id
             if(id === '0' || id === null){
+              this.$notify({ type:'warning', message:'请登录后再访问'});
               window.location.href= 'page/login.html'
-              this.$notify({ type:'warning', message:'还没登录请登录后再访问'});
             }
             if(sessionStorage.getItem('flag') === '0'){
               this.flag = true
@@ -149,6 +152,12 @@
               sessionStorage.setItem("id",this.id);
               window.requestAnimationFrame(()=>{
                 window.location.href= 'page/yy.html'
+              })
+            },
+            toBlPage(){
+              sessionStorage.setItem("id",this.id);
+              window.requestAnimationFrame(()=>{
+                window.location.href= 'page/dzbl.html'
               })
             },
             loginOut(){

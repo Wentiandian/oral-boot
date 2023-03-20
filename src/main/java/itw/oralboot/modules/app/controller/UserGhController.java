@@ -52,7 +52,7 @@ public class UserGhController extends AbstractController{
                 .eq(SysGhEntity::getStatus,1);
         SysGhEntity sysGhEntity = sysGhService.getOne(queryWrapper);
         if(sysGhEntity != null){
-            return R.error(200,"已挂过号，无需再次挂号");
+            return R.error(200,"已挂号").put("info",sysGhEntity);
         }else {
             return R.ok();
         }

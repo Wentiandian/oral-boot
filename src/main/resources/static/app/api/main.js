@@ -49,6 +49,22 @@ function  saveYy(data){
         data
     })
 }
+
+function  getRecord(id){
+    return $axios({
+        'url': `/app/Bl/info/${id}`,
+        'method': 'get',
+    })
+}
+
+
+function  getDocList(deptId){
+    return $axios({
+        'url': `/sys/common/docList/${deptId}`,
+        'method': 'get',
+    })
+}
+
 /*//更新用户信息
 function  updateUserMessApi(data){
     return $axios({

@@ -47,6 +47,9 @@ public class CommonController extends AbstractController{
     @Autowired
     private SysUserService sysUserService;
 
+    @Autowired
+    private DocDeptService docDeptService;
+
     private String basePath="E:/work/oral-files/";
 
     /**
@@ -221,7 +224,7 @@ public class CommonController extends AbstractController{
      * @return
      */
     @GetMapping("/roleList/{roleId}")
-    public R docList(@PathVariable String roleId){
+    public R roleList(@PathVariable String roleId){
         //通过角色ID查询所有的该角色用户ID
         LambdaQueryWrapper<SysUserRoleEntity> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(SysUserRoleEntity::getRoleId,roleId);
@@ -229,6 +232,26 @@ public class CommonController extends AbstractController{
         //获取用户信息
         List<SysUserEntity> userList = sysUserRoleEntityList.stream().map((item)->{
             SysUserEntity user = sysUserService.getById(item.getUserId());
+            return user;
+        }).collect(Collectors.toList());
+
+        return R.ok().put("list",userList);
+    }
+
+    /**
+     * 获取科室对应医生列表
+     * @param deptId
+     * @return
+     */
+    @GetMapping("/docList/{deptId}")
+    public R docList(@PathVariable String deptId){
+        //通过科室ID查询所有对应ID
+        LambdaQueryWrapper<DocDept> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(DocDept::getDeptId,deptId);
+        List<DocDept> docDeptList = docDeptService.list(queryWrapper);
+        //获取医生信息
+        List<SysUserEntity> userList = docDeptList.stream().map((item)->{
+            SysUserEntity user = sysUserService.getById(item.getDocId());
             return user;
         }).collect(Collectors.toList());
 

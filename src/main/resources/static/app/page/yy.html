@@ -30,6 +30,9 @@
     .son button{
         margin-left: 40px;margin-top: 10px;
     }
+    .box-card {
+        width: 200px;
+    }
 </style>
 <body>
 <div id="main" class="app">
@@ -47,9 +50,14 @@
             简介: 口腔医院挂号预约平台。e8f7f6
         </div>
     </div>
-    <div class="container">
+    <div class="container" v-if="flag">
         <div class="son">
-            <el-select v-model="form.deptId" placeholder="请选择预约科室" type="primary" clearable>
+            <div class="block">
+                <el-date-picker v-model="form.bookingTime" type="datetime" placeholder="选择日期时间" clearable value-format="yyyy-MM-dd HH:mm:ss"></el-date-picker>
+            </div>
+        </div>
+        <div class="son">
+            <el-select v-model="form.deptId" placeholder="请选择预约科室" type="primary" clearable @change="getDocList(form.deptId)">
                 <el-option
                         v-for="item in deptList"
                         :key="item.value"
@@ -69,16 +77,21 @@
             </el-select>
         </div>
         <div class="son">
-            <div class="block">
-                <el-date-picker v-model="form.bookingTime" type="datetime" placeholder="选择日期时间" clearable value-format="yyyy-MM-dd HH:mm:ss"></el-date-picker>
-            </div>
-        </div>
-        <div class="son">
             <el-input placeholder="请输入真实姓名" v-model="form.patientName"  maxlength='20' clearable></el-input>
         </div>
         <div class="son">
             <el-button type="primary" round @click="saveInfo">立即提交</el-button>
         </div>
+    </div>
+    <div class="container" v-if="!flag">
+        <el-card class="box-card">
+            {{'预约编号:'+ yyInfo.bookingId + '\n' +
+            '患者编号:'+ yyInfo.patientId + '\n' +
+            '患者名称:'+ yyInfo.patientName+ '\n' +
+            '科室编号:'+ yyInfo.deptId + '\n' +
+            '医生编号:'+ yyInfo.docId + '\n' +
+            '预约时间:'+ yyInfo.bookingTime }}
+        </el-card>
     </div>
 </div>
 
@@ -106,9 +119,10 @@
                     docId:'',
                     bookingTime:''
                 },
+                yyInfo: {},
                 deptList:[],
                 docList:[],
-
+                flag: true
             }
         },
         created(){
@@ -120,7 +134,6 @@
             }
             this.check()
             this.getDeptList()
-            this.getDocList()
         },
         mounted(){
         },
@@ -129,18 +142,19 @@
                 const res = await getYyInfo(this.form.patientId)
                 console.log(res)
                 if(res.code === 200){
+                    this.flag = false
+                    this.yyInfo = res.info
                     this.$notify({message: res.msg, type: 'success'})
                     sessionStorage.setItem("id",this.form.patientId)
-                    window.location.href= '../index.html'
                 }
             },
             //保存预约信息
             async saveInfo(){
                 const res = await saveYy(this.form)
                 if(res.code === 0){
-                    this.$message({message: '预约成功', type: 'success'})
+                    this.$notify({message: '预约成功', type: 'success'})
                     sessionStorage.setItem("id",this.form.patientId)
-                    window.location.href= '../index.html'
+                    await this.check()
                 }
                 else {
                     this.$notify.error(res.msg)
@@ -159,23 +173,28 @@
                         this.deptList.push(deptMap)
                     }
                 } else {
-                    this.$message({ message: res.msg })
+                    this.$notify({ message: res.msg })
                 }
             },
             //获取医生列表
-            async getDocList () {
-                const res = await getRoleList('1')
-                if (res && res.code === 0){
-                    let docMap = {}
-                    for (let i = 0; i < res.list.length; i++) {
-                        docMap = {
-                            'label': res.list[i].name,
-                            'value': res.list[i].userId
+            async getDocList (deptId) {
+                this.docList = []
+                if(deptId === ''){
+                    this.docList = []
+                }else {
+                    const res = await getDocList(deptId)
+                    if (res && res.code === 0){
+                        let docMap = {}
+                        for (let i = 0; i < res.list.length; i++) {
+                            docMap = {
+                                'label': res.list[i].name,
+                                'value': res.list[i].userId
+                            }
+                            this.docList.push(docMap)
                         }
-                        this.docList.push(docMap)
+                    } else {
+                        this.$notify({ message: res.msg })
                     }
-                } else {
-                    this.$message({ message: res.msg })
                 }
             }
         }

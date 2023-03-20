@@ -1,11 +1,13 @@
 package itw.oralboot.modules.sys.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @TableName("ele_records")
@@ -83,6 +85,18 @@ public class EleRecordsEntity implements Serializable {
      */
     @TableId
     private Long prescriptionId;
+
+    /**
+     * 对应药物单
+     */
+    @TableField(exist=false)
+    private PrescriptionEntity prescriptionEntity;
+
+    /**
+     * 对应药品
+     */
+    @TableField(exist=false)
+    private List<DrugPreEntity> drugPreEntityList;
 
     /**
      * 0：挂号   1：预约

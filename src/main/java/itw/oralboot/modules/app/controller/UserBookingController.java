@@ -47,7 +47,7 @@ public class UserBookingController extends AbstractController{
                 .eq(SysBooking::getStatus,1);
         SysBooking sysBooking = sysBookingService.getOne(queryWrapper);
         if(sysBooking != null){
-            return R.error(200,"已预约过，无需再次预约");
+            return R.error(200,"已预约").put("info",sysBooking);
         }else {
             return R.ok();
         }

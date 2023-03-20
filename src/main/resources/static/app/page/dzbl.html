@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,user-scalable=no,minimal-ui">
+    <title>口腔医院挂号预约平台</title>
+    <link rel="icon" href="../images/favico.ico">
+    <!--不同屏幕尺寸根字体设置-->
+    <script src="../js/base.js"></script>
+    <!--element-ui的样式-->
+    <link rel="stylesheet" href="../plugins/element-ui/index.css" />
+    <!--引入vant样式-->
+    <link rel="stylesheet" href="../styles/vant.min.css"/>
+    <!-- 引入样式  -->
+    <link rel="stylesheet" href="../styles/index.css" />
+    <!--本页面内容的样式-->
+    <link rel="stylesheet" href="../styles/main.css" />
+</head>
+<style>
+    /* 父容器样式 */
+    .container{
+        margin:0; width:200px; height:150px;
+    }
+    /* 子容器样式 */
+    .son{
+        margin:0 auto;height: 80px;
+    }
+    .son button{
+        margin-left: 40px;margin-top: 10px;
+    }
+    .text {
+        font-size: 14px;
+    }
+
+    .item {
+        padding: 18px 0;
+    }
+
+    .box-card {
+        width: 380px;
+    }
+</style>
+<body>
+<div id="main" class="app">
+    <div class="divHead">
+        <img src="../images/user.png"/>
+    </div>
+    <div class="divTitle">
+        <div class="divStatic">
+            <img src="../images/logo.png" class="logo"/>
+            <div class="divDesc">
+                <div class="divName">口腔医院挂号预约平台</div>
+            </div>
+        </div>
+        <div class="divDesc">
+            简介: 口腔医院挂号预约平台。
+        </div>
+    </div>
+    <h1 style="margin-left: 140px;margin-top: 60px;font-size: 22rem;">病历</h1>
+    <div class="container">
+        <el-card class="box-card">
+            <div v-for="item in recordList" :key="item.patientId" class="text item">
+                <el-input
+                        type="textarea"
+                        :autosize="{ minRows: 6, maxRows: 1}"
+                        placeholder="请输入内容"
+                        v-model=" item ">
+                </el-input>
+            </div>
+        </el-card>
+    </div>
+
+</div>
+<!-- 开发环境版本，包含了有帮助的命令行警告 -->
+<script src="../plugins/vue/vue.js"></script>
+<!-- 引入组件库 -->
+<script src="../plugins/element-ui/index.js"></script>
+<!-- 引入vant样式 -->
+<script src="../js/vant.min.js"></script>
+<!-- 引入axios -->
+<script src="../plugins/axios/axios.min.js"></script>
+<script src="../js/request.js"></script>
+<script src="../js/common.js"></script>
+<script src="../api/main.js"></script>
+</body>
+<script>
+    new Vue({
+        el:'#main',
+        data(){
+            return {
+                patientId:'',
+                recordList:[],
+                activeType:0,
+            }
+        },
+        created(){
+            let id = sessionStorage.getItem("id")
+            this.patientId = id
+            if(id === '0' || id === null){
+                this.$notify({ type:'warning', message:'请登录后再访问'});
+                window.location.href= 'page/login.html'
+            }
+            this.getRecordInfo()
+        },
+        mounted(){
+        },
+        methods:{
+            async getRecordInfo() {
+                const res = await getRecord(this.patientId)
+                console.log(res)
+                if(res.code === 0){
+                    let info = ''
+                    for (let i = 0; i < res.list.length; i++) {
+                        let drugs = ''
+                        for (let j = 0; j < res.list[i].drugPreEntityList.length; j++) {
+                            drugs =  drugs + '药品' + j + ':' +
+                                res.list[i].drugPreEntityList[j].drugName +
+                                '---->数量:' +
+                                res.list[i].drugPreEntityList[j].drugNum +
+                                '\n'
+                        }
+                        info =
+                            '患者:' + res.list[i].patientName + '\n' +
+                            '主治医生:' + res.list[i].docName + '\n' +
+                            '护士:' + res.list[i].nurseName + '\n' +
+                            '就诊时间:' + res.list[i].treatmentTime + '\n' +
+                            '诊断描述:' + res.list[i].treatmentDescription + '\n' +
+                            '治疗方案:' + res.list[i].treatmentMethod + '\n' +
+                            '治疗过程:' + res.list[i].treatmentDuring + '\n' +
+                            '医嘱:' + res.list[i].docOrders + '\n' +
+                            '开药医生:' + res.list[i].prescriptionEntity.docName + '\n' +
+                            '医院:' + res.list[i].prescriptionEntity.hospital + '\n' +
+                            '开处方时间:' + res.list[i].prescriptionEntity.prescriptionTime + '\n' +
+                            '科室ID:' + res.list[i].deptId + '\n' +
+                            '使用方法:' + res.list[i].prescriptionEntity.useMethod + '\n' +
+                            '总价:' + res.list[i].patientName
+                        this.recordList.push(info + '\n' + drugs)
+                    }
+                }else {
+                    this.$notify.error(res.msg)
+                }
+            }
+        }
+    })
+</script>
+</html>
