@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import itw.oralboot.common.utils.R;
 import itw.oralboot.modules.app.utils.ValidateCodeUtils;
 import itw.oralboot.modules.sys.entity.PatientEntity;
+import itw.oralboot.modules.sys.form.PatientSaveFrom;
+import itw.oralboot.modules.sys.service.PatientSaveService;
 import itw.oralboot.modules.sys.service.PatientService;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.logging.log4j.util.Strings;
@@ -28,6 +30,9 @@ public class UserController extends AbstractController{
 
     @Autowired
     private PatientService patientService;
+
+    @Autowired
+    private PatientSaveService patientSaveService;
 
     /**
      * 生成验证码并发生验证码
@@ -71,25 +76,26 @@ public class UserController extends AbstractController{
             //如果验证码争取判断是否为新用户
             LambdaQueryWrapper<PatientEntity> queryWrapper=new LambdaQueryWrapper<>();
             queryWrapper.eq(PatientEntity::getMobile,mobile);
-            PatientEntity patient=patientService.getOne(queryWrapper);
+            PatientEntity patient = patientService.getOne(queryWrapper);
             //如果数据库中查找不到该用户
             if(patient==null){
-                patient=new PatientEntity();
+                PatientSaveFrom user = new PatientSaveFrom();
                 //新用户自动注册
-                patient.setMobile(mobile);
+                user.setMobile(mobile);
                 //生成id
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSSS");
                 Long id = Long.valueOf(sdf.format(System.currentTimeMillis()));
-                patient.setPatientId(id);
+                user.setPatientId(id);
                 SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z");
                 Date date = new Date(System.currentTimeMillis());
-                patient.setCreateTime(formatter.parse(formatter.format(date)));
-                patient.setCreateUserId(id);
-                patient.setStatus(1);
+                user.setCreateTime(formatter.parse(formatter.format(date)));
+                user.setCreateUserId(id);
+                user.setStatus(1);
                 //用户状态默认为1
-                patientService.save(patient);
+                patientSaveService.save(user);
                 //将用户id保存到session
                 session.setAttribute("id",id);
+                return R.ok().put("user",user);
             }else{
                 session.setAttribute("id",patient.getPatientId());
             }

@@ -33,6 +33,9 @@
     .son2{
       margin-left: 30px; margin-top:100px; height: 80px;
     }
+    .son3 button{
+      float: left;margin-top: 200px;margin-left: 50px;
+    }
     .son1 button{
       margin-left: 50px;margin-top: 10px;
     }
@@ -80,7 +83,10 @@
             <el-button type="primary" round icon="el-icon-document-checked" @click="toBlPage">电子病历</el-button>
           </div>
         </div>
-        <div class="son2">
+        <div class="son2" v-if="!flag">
+          <el-button type="primary" round @click="loginOut">退出登录</el-button>
+        </div>
+        <div class="son3" v-if="flag">
           <el-button type="primary" round @click="loginOut">退出登录</el-button>
         </div>
       </div>
@@ -131,14 +137,18 @@
           },
           methods:{
             async saveUser() {
-              sessionStorage.setItem('id',this.id)
-              const res =  await save(this.form)
-              if(res.code === 0){
-                this.$notify({message: '保存成功', type: 'success'})
-                this.flag = false
-                sessionStorage.setItem('flag','1')
+              if(this.form.patientName === '' || this.form.age === '' || this.form.sex === ''){
+                this.$notify({message: '请先填完信息，再提交', type: 'danger'})
               } else {
-                this.$notify.error(res.msg)
+                sessionStorage.setItem('id',this.id)
+                const res =  await save(this.form)
+                if(res.code === 0){
+                  this.$notify({message: '保存成功', type: 'success'})
+                  this.flag = false
+                  sessionStorage.setItem('flag','1')
+                } else {
+                  this.$notify.error(res.msg)
+                }
               }
             },
 

@@ -1,4 +1,4 @@
-package itw.oralboot.modules.sys.entity;
+package itw.oralboot.modules.sys.form;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -16,13 +16,13 @@ import java.util.List;
 
 @Data
 @TableName("patient")
-public class PatientEntity implements Serializable {
+public class PatientSaveFrom implements Serializable {
+
     private static final long serialVersionUID = 1L;
 
     /**
      * 患者ID
      */
-    @TableId
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Long patientId;
 
