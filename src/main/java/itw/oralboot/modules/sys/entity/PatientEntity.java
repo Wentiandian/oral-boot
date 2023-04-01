@@ -22,7 +22,6 @@ public class PatientEntity implements Serializable {
     /**
      * 患者ID
      */
-    @TableId
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Long patientId;
 

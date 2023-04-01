@@ -64,14 +64,12 @@ public class PatientController extends AbstractController{
      */
     @GetMapping("/info/{patientId}")
     public R info(@PathVariable("patientId") Long patientId){
-        logger.info(patientId.toString());
         //查询患者信息
         PatientEntity patient = patientService.getById(patientId);
         //查询患者对应的病历信息，获取电子病历列表
         LambdaQueryWrapper<EleRecordsEntity> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(patientId!=null,EleRecordsEntity::getPatientId,patientId);
         List<EleRecordsEntity> eleRecordsEntityList = eleRecordsService.list(queryWrapper);
-        logger.info(eleRecordsEntityList.toString());
         eleRecordsEntityList.stream().map((item)->{
             //根据药物单号查询药物单
             Long prescriptionId = item.getPrescriptionId();

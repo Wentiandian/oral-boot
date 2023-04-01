@@ -120,6 +120,7 @@
         }
       },
       async check(){
+        this.form.patientId = sessionStorage.getItem('id')
         const res = await getGhInfo(this.form.patientId)
         if(res.code === 200){
           this.flag = false

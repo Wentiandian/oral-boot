@@ -21,7 +21,7 @@
 <style>
     /* 父容器样式 */
     .container{
-        margin:0; width:200px; height:150px;
+        margin:0; width:200px;
     }
     /* 子容器样式 */
     .son{
@@ -61,7 +61,7 @@
     <h1 style="margin-left: 140px;margin-top: 60px;font-size: 22rem;">病历</h1>
     <div class="container">
         <el-card class="box-card">
-            <div v-for="item in recordList" :key="item.patientId" class="text item">
+            <div class="text item" v-for="item in recordList" :key="item.patientId">
                 <el-input
                         type="textarea"
                         :autosize="{ minRows: 6, maxRows: 1}"
@@ -130,11 +130,11 @@
                             '治疗方案:' + res.list[i].treatmentMethod + '\n' +
                             '治疗过程:' + res.list[i].treatmentDuring + '\n' +
                             '医嘱:' + res.list[i].docOrders + '\n' +
-                            '开药医生:' + res.list[i].prescriptionEntity.docName + '\n' +
-                            '医院:' + res.list[i].prescriptionEntity.hospital + '\n' +
-                            '开处方时间:' + res.list[i].prescriptionEntity.prescriptionTime + '\n' +
+                            '开药医生:' + res.list[i]['prescriptionEntity']['docName'] + '\n' +
+                            '医院:' + res.list[i]['prescriptionEntity']['hospital'] + '\n' +
+                            '开处方时间:' + res.list[i]['prescriptionEntity']['prescriptionTime'] + '\n' +
                             '科室ID:' + res.list[i].deptId + '\n' +
-                            '使用方法:' + res.list[i].prescriptionEntity.useMethod + '\n' +
+                            '使用方法:' + res.list[i]['prescriptionEntity']['useMethod'] + '\n' +
                             '总价:' + res.list[i].patientName
                         this.recordList.push(info + '\n' + drugs)
                     }
