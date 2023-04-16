@@ -11,7 +11,7 @@
  Target Server Version : 80027
  File Encoding         : 65001
 
- Date: 17/03/2023 16:42:20
+ Date: 16/04/2023 17:36:52
 */
 
 SET NAMES utf8mb4;
@@ -30,12 +30,20 @@ CREATE TABLE `doc_dept`  (
   `modify_user_id` int(0) NULL DEFAULT NULL COMMENT '修改者ID',
   `modify_time` datetime(0) NULL DEFAULT NULL COMMENT '修改时间',
   PRIMARY KEY (`doc_dept_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '医生与科室与i应关系表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '医生与科室对应关系表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of doc_dept
 -- ----------------------------
 INSERT INTO `doc_dept` VALUES (1, 2, 1, NULL, NULL, NULL, NULL);
+INSERT INTO `doc_dept` VALUES (2, 10, 7, NULL, NULL, NULL, NULL);
+INSERT INTO `doc_dept` VALUES (3, 11, 6, NULL, NULL, NULL, NULL);
+INSERT INTO `doc_dept` VALUES (4, 12, 1, NULL, NULL, NULL, NULL);
+INSERT INTO `doc_dept` VALUES (5, 12, 7, NULL, NULL, NULL, NULL);
+INSERT INTO `doc_dept` VALUES (6, 11, 7, NULL, NULL, NULL, NULL);
+INSERT INTO `doc_dept` VALUES (7, 2, 8, NULL, NULL, NULL, NULL);
+INSERT INTO `doc_dept` VALUES (8, 10, 9, NULL, NULL, NULL, NULL);
+INSERT INTO `doc_dept` VALUES (9, 11, 9, NULL, NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for drug_pre
@@ -47,13 +55,22 @@ CREATE TABLE `drug_pre`  (
   `drug_id` int(0) NULL DEFAULT NULL,
   `drug_num` int(0) NULL DEFAULT NULL,
   PRIMARY KEY (`drug_pre_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '药号单对应的药品关系表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 26 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '药号单对应的药品关系表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of drug_pre
 -- ----------------------------
 INSERT INTO `drug_pre` VALUES (7, 7, 3, 1);
 INSERT INTO `drug_pre` VALUES (8, 7, 1, 2);
+INSERT INTO `drug_pre` VALUES (9, 8, 3, 1);
+INSERT INTO `drug_pre` VALUES (10, 8, 2, 12);
+INSERT INTO `drug_pre` VALUES (11, 8, 1, 5);
+INSERT INTO `drug_pre` VALUES (12, 9, 3, 1);
+INSERT INTO `drug_pre` VALUES (13, 9, 2, 23);
+INSERT INTO `drug_pre` VALUES (14, 10, 3, 12);
+INSERT INTO `drug_pre` VALUES (15, 11, 3, 12);
+INSERT INTO `drug_pre` VALUES (16, 12, 3, 12);
+INSERT INTO `drug_pre` VALUES (28, 21, 3, 1);
 
 -- ----------------------------
 -- Table structure for ele_records
@@ -61,13 +78,13 @@ INSERT INTO `drug_pre` VALUES (8, 7, 1, 2);
 DROP TABLE IF EXISTS `ele_records`;
 CREATE TABLE `ele_records`  (
   `ele_records_id` int(0) NOT NULL AUTO_INCREMENT,
-  `patient_id` int(0) NOT NULL COMMENT '病人ID',
+  `patient_id` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '病人ID',
   `doc_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '医生',
   `nurse_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '护士',
   `is_referral` int(0) NULL DEFAULT NULL COMMENT '是否复诊',
   `treatment_num` int(0) NULL DEFAULT NULL COMMENT '第几次就诊',
   `treatment_time` datetime(0) NULL DEFAULT NULL COMMENT '就诊时间',
-  `treatment_description` varchar(2000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '诊断描述',
+  `treatment_description` varchar(2000) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '诊断描述',
   `treatment_method` varchar(2000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '治疗方案',
   `treatment_during` varchar(2000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '治疗过程',
   `doc_orders` varchar(2000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '医嘱',
@@ -78,14 +95,20 @@ CREATE TABLE `ele_records`  (
   `modify_time` datetime(0) NULL DEFAULT NULL COMMENT '修改时间',
   `patient_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '患者名称',
   `dept_id` int(0) NULL DEFAULT NULL COMMENT '治疗科室ID',
-  `is_gh_booking` int(0) NULL DEFAULT NULL COMMENT '0:挂号  1：预约',
+  `is_gh_booking` int(0) NULL DEFAULT NULL COMMENT '0：挂号1：预约',
   PRIMARY KEY (`ele_records_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '电子病历信息表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 16 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '电子病历信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of ele_records
 -- ----------------------------
-INSERT INTO `ele_records` VALUES (7, 3, 'ys', 'ys', 0, 1, '2023-03-29 00:00:00', 'nejrkirsughrsghsh', 'jrskgnrgnruighrghrigh', 'nfsjfjfisfjjeifj', 'sefbhfrhjbbgsghsr', 7, 1, '2023-03-12 00:02:52', NULL, NULL, 'ccc', 1, 1);
+INSERT INTO `ele_records` VALUES (7, '202303160025320561', 'ys', 'ys', 0, 1, '2023-03-29 00:00:00', 'nejrkirsughrsghsh', 'jrskgnrgnruighrghrigh', 'nfsjfjfisfjjeifj', 'sefbhfrhjbbgsghsr', 7, 1, '2023-03-12 00:02:52', 1, '2023-03-27 22:27:39', 'ccc', 1, 1);
+INSERT INTO `ele_records` VALUES (8, '202303160025320561', 'ys', 'ys', 0, 1, '2023-03-29 00:00:00', 'nejrkirsughrsghsh', 'jrskgnrgnruighrghrigh', 'nfsjfjfisfjjeifj', 'sefbhfrhjbbgsghsr', 8, 1, '2023-03-12 00:02:52', NULL, NULL, 'ccc', 1, 1);
+INSERT INTO `ele_records` VALUES (9, '202303160025320580', 'ys', 'ys', 1, 3, '2023-04-26 00:00:00', 'wewewewwewe', 'wewewew', 'weweweeeeeeee', 'yuyuyuyuyufsgg', 9, 1, '2023-04-01 14:00:59', 1, '2023-04-15 22:56:56', 'yyy', 7, 1);
+INSERT INTO `ele_records` VALUES (10, '202303160025320580', 'add', NULL, 1, NULL, '2023-04-12 00:00:00', 'wad', 'fhtdth', 'rrrr', 'yyy', 10, 1, '2023-04-02 13:22:02', 1, '2023-04-09 21:40:56', 'adwwa', 1, 1);
+INSERT INTO `ele_records` VALUES (11, '202303160025320580', 'add', NULL, 1, NULL, '2023-04-12 00:00:00', 'wad', NULL, NULL, NULL, 11, 1, '2023-04-02 13:22:11', 1, '2023-04-09 21:41:06', 'adwwa', 1, 0);
+INSERT INTO `ele_records` VALUES (12, '202303160025320580', 'add', NULL, 1, NULL, '2023-04-12 00:00:00', 'wad', NULL, NULL, NULL, 12, 1, '2023-04-02 13:22:15', 1, '2023-04-09 21:41:11', 'adwwa', 1, 0);
+INSERT INTO `ele_records` VALUES (20, '202303160025320580', 'dfe', 'sfse', 1, 1, '2023-04-25 00:00:00', 'sefe', 'sef', 'sef', NULL, 21, 1, '2023-04-16 11:22:45', NULL, NULL, 'www', 1, 0);
 
 -- ----------------------------
 -- Table structure for orders
@@ -93,7 +116,7 @@ INSERT INTO `ele_records` VALUES (7, 3, 'ys', 'ys', 0, 1, '2023-03-29 00:00:00',
 DROP TABLE IF EXISTS `orders`;
 CREATE TABLE `orders`  (
   `order_id` int(0) NOT NULL AUTO_INCREMENT,
-  `patient_id` int(0) NULL DEFAULT NULL COMMENT '患者ID',
+  `patient_id` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '患者ID',
   `prescription_id` int(0) NULL DEFAULT NULL COMMENT '药物单ID',
   `sum` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '总价',
   `order_time` datetime(0) NULL DEFAULT NULL COMMENT '生成订单时间',
@@ -103,20 +126,24 @@ CREATE TABLE `orders`  (
   `modify_user_id` int(0) NULL DEFAULT NULL COMMENT '修改者ID',
   `modify_time` datetime(0) NULL DEFAULT NULL COMMENT '修改时间',
   PRIMARY KEY (`order_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '缴费订单信息表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '缴费订单信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of orders
 -- ----------------------------
-INSERT INTO `orders` VALUES (1, 1, 1, '155.00', '2023-03-11 16:39:59', 0, 1, '2023-03-11 16:39:59', NULL, NULL);
-INSERT INTO `orders` VALUES (2, 3, 7, '81.00', '2023-03-12 10:32:51', 0, 1, '2023-03-12 10:32:51', NULL, NULL);
+INSERT INTO `orders` VALUES (1, '1', 1, '155.00', '2023-03-11 16:39:59', 0, 1, '2023-03-11 16:39:59', NULL, NULL);
+INSERT INTO `orders` VALUES (2, '3', 7, '81.00', '2023-03-12 10:32:51', 0, 1, '2023-03-12 10:32:51', NULL, NULL);
+INSERT INTO `orders` VALUES (4, '202303160041530750', 14, '2405.82', '2023-04-09 21:53:02', 0, 1, '2023-04-09 21:53:02', NULL, NULL);
+INSERT INTO `orders` VALUES (5, '202303160025320580', 13, '104.50', '2023-04-09 21:54:56', 0, 1, '2023-04-09 21:54:56', NULL, NULL);
+INSERT INTO `orders` VALUES (6, '202303160041530750', 15, '481.00', '2023-04-15 22:41:11', 0, 1, '2023-04-15 22:41:11', NULL, NULL);
+INSERT INTO `orders` VALUES (8, '202303160025320580', 21, '50.00', '2023-04-16 11:23:04', 0, 1, '2023-04-16 11:23:04', NULL, NULL);
 
 -- ----------------------------
 -- Table structure for patient
 -- ----------------------------
 DROP TABLE IF EXISTS `patient`;
 CREATE TABLE `patient`  (
-  `patient_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `patient_id` bigint(0) NOT NULL,
   `patient_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `sex` int(0) NULL DEFAULT NULL COMMENT '1:男  0: 女',
   `age` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
@@ -133,13 +160,13 @@ CREATE TABLE `patient`  (
 -- ----------------------------
 -- Records of patient
 -- ----------------------------
-INSERT INTO `patient` VALUES ('1', 'aaa', 1, '12', '156489648', NULL, '1', '2023-02-27 16:05:25', NULL, NULL, 1);
-INSERT INTO `patient` VALUES ('2', 'bbb', 0, '13', '1954652865', NULL, '2', '2023-02-28 10:01:54', NULL, NULL, 1);
-INSERT INTO `patient` VALUES ('202303160025320561', 'www', 1, '23', '18219135363', 'asffggggg', '202303160025320561', '2023-03-16 00:25:32', NULL, NULL, 1);
-INSERT INTO `patient` VALUES ('202303160041530746', 'kkk', 0, '23', '19254802938', '12326@063.com', '202303160041530746', '2023-03-16 00:41:53', NULL, NULL, 1);
-INSERT INTO `patient` VALUES ('3', 'ccc', 1, '15', '44558885674', NULL, '3', '2023-02-28 15:11:19', NULL, NULL, 1);
-INSERT INTO `patient` VALUES ('7', 'www', 1, '23', '2144233223', 'fefsgrgdgtd', NULL, '2023-03-14 21:47:13', NULL, NULL, 1);
-INSERT INTO `patient` VALUES ('8', 'ttt', 0, '45', '1564984968', 'awfsgrdgdg', NULL, '2023-03-14 21:48:18', NULL, NULL, 1);
+INSERT INTO `patient` VALUES (1, 'aaa', 1, '12', '156489648', NULL, '1', '2023-02-27 16:05:25', NULL, NULL, 1);
+INSERT INTO `patient` VALUES (2, 'bbb', 0, '13', '1954652865', NULL, '2', '2023-02-28 10:01:54', NULL, NULL, 1);
+INSERT INTO `patient` VALUES (3, 'ccc', 1, '15', '44558885674', NULL, '3', '2023-02-28 15:11:19', NULL, NULL, 1);
+INSERT INTO `patient` VALUES (7, 'www', 1, '23', '2144233223', 'fefsgrgdgtd', NULL, '2023-03-14 21:47:13', NULL, NULL, 1);
+INSERT INTO `patient` VALUES (8, 'ttt', 0, '45', '1564984968', 'awfsgrdgdg', NULL, '2023-03-14 21:48:18', NULL, NULL, 1);
+INSERT INTO `patient` VALUES (202303160025320561, 'www', 1, '23', '18219135363', 'asffggggg', '202303160025320561', '2023-03-16 00:25:32', NULL, NULL, 1);
+INSERT INTO `patient` VALUES (202303160041530746, 'kkk', 0, '23', '19254802938', '12326@063.com', '202303160041530746', '2023-03-16 00:41:53', NULL, NULL, 1);
 
 -- ----------------------------
 -- Table structure for prescription
@@ -148,7 +175,7 @@ DROP TABLE IF EXISTS `prescription`;
 CREATE TABLE `prescription`  (
   `prescription_id` int(0) NOT NULL AUTO_INCREMENT,
   `hospital` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '医院名称',
-  `patient_id` int(0) NULL DEFAULT NULL COMMENT '病人ID',
+  `patient_id` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '病人ID',
   `dept_id` int(0) NULL DEFAULT NULL COMMENT '科室ID',
   `prescription_time` datetime(0) NULL DEFAULT NULL COMMENT '开处方时间',
   `use_method` varchar(2000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '使用方法',
@@ -163,12 +190,19 @@ CREATE TABLE `prescription`  (
   `sum` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '总价',
   `flag` int(0) NULL DEFAULT NULL COMMENT '用来标记获取药物单ID   0：未获取到   1：已获取到',
   PRIMARY KEY (`prescription_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '药号单信息表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 16 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '药号单信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of prescription
 -- ----------------------------
-INSERT INTO `prescription` VALUES (7, '人民医院', 3, 1, '2023-03-12 00:02:52', 'grsgbnrsgnnknklrgnk', 'ys', 'ys', 'ys', 1, '2023-03-12 00:02:52', 1, '2023-03-12 10:32:51', 1, '81.00', 1);
+INSERT INTO `prescription` VALUES (7, '人民医院', '202303160025320580', 1, '2023-03-12 00:02:52', 'grsgbnrsgnnknklrgnk', 'ys', 'ys', 'ys', 1, '2023-03-12 00:02:52', 1, '2023-03-27 22:27:39', 1, '81.00', 1);
+INSERT INTO `prescription` VALUES (8, '人民医院', '202303160025320561', 1, '2023-03-12 00:02:52', 'grsgbnrsgnnknklrgnk', 'ys', 'ys', 'ys', 1, '2023-03-12 00:02:52', 1, '2023-03-12 10:32:51', 1, '81.00', 1);
+INSERT INTO `prescription` VALUES (9, 'weew', '202303160025320580', 7, '2023-04-01 14:00:59', 'ferfrferdg', 'wewe', 'frrf', NULL, 1, '2023-04-01 14:00:59', 1, '2023-04-15 22:56:56', 0, NULL, 1);
+INSERT INTO `prescription` VALUES (10, 'adad', '202303160025320580', 1, '2023-04-02 13:22:02', NULL, 'wtd', NULL, NULL, 1, '2023-04-02 13:22:02', 1, '2023-04-09 21:40:56', 0, NULL, 1);
+INSERT INTO `prescription` VALUES (11, 'adad', '202303160025320580', 1, '2023-04-02 13:22:11', NULL, NULL, NULL, NULL, 1, '2023-04-02 13:22:11', 1, '2023-04-09 21:41:06', 0, NULL, 1);
+INSERT INTO `prescription` VALUES (12, 'adad', '202303160025320580', 1, '2023-04-02 13:22:15', NULL, 'ae2', NULL, NULL, 1, '2023-04-02 13:22:15', 1, '2023-04-09 21:41:11', 0, NULL, 1);
+INSERT INTO `prescription` VALUES (17, 'sefse', NULL, 8, '2023-04-16 09:15:11', 'sef', 'sef', 'sef', NULL, 1, '2023-04-16 09:15:11', NULL, NULL, 0, NULL, 0);
+INSERT INTO `prescription` VALUES (21, 'sefs', '202303160025320580', 1, '2023-04-16 11:22:45', NULL, 'sef', 'sf', NULL, 1, '2023-04-16 11:22:45', 1, '2023-04-16 11:23:04', 1, '50.00', 1);
 
 -- ----------------------------
 -- Table structure for sys_booking
@@ -188,7 +222,7 @@ CREATE TABLE `sys_booking`  (
   `status` int(0) NULL DEFAULT NULL COMMENT '0:已就诊 1：未就诊 2：已过期',
   `patient_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`booking_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '患者预约信息表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 17 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '患者预约信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_booking
@@ -197,6 +231,10 @@ INSERT INTO `sys_booking` VALUES (2, '3', 1, 2, '2023-03-01 17:09:07', 1, NULL, 
 INSERT INTO `sys_booking` VALUES (10, '202303160025320561', 1, 2, '2023-03-16 00:26:26', NULL, '202303160025320561', '2023-03-16 00:26:30', NULL, NULL, 2, 'www');
 INSERT INTO `sys_booking` VALUES (11, '202303160041530746', 6, 11, '2023-03-16 00:41:04', NULL, '202303160041530746', '2023-03-16 00:41:07', NULL, NULL, 2, 'kkk');
 INSERT INTO `sys_booking` VALUES (12, '202303160025320561', 6, 2, '2023-03-17 16:25:32', NULL, '202303160025320561', '2023-03-17 16:25:42', NULL, NULL, 2, 'www');
+INSERT INTO `sys_booking` VALUES (13, '202303160025320561', 1, 2, '2023-03-20 22:09:02', NULL, '202303160025320561', '2023-03-20 22:09:08', NULL, NULL, 2, 'www');
+INSERT INTO `sys_booking` VALUES (14, '202303160025320561', 1, 2, '2023-04-12 00:00:00', NULL, '202303160025320561', '2023-04-02 13:20:10', 1, '2023-04-09 21:31:15', 2, 'ww');
+INSERT INTO `sys_booking` VALUES (15, '202303160041530746', 1, 2, '2023-06-22 00:00:00', NULL, '202303160041530746', '2023-04-09 21:30:59', NULL, NULL, 0, 'wewe');
+INSERT INTO `sys_booking` VALUES (16, '202304152247240427', 7, 11, '2023-04-04 00:00:00', NULL, '202304152247240427', '2023-04-15 22:49:33', NULL, NULL, 0, 'ooo');
 
 -- ----------------------------
 -- Table structure for sys_captcha
@@ -218,6 +256,7 @@ INSERT INTO `sys_captcha` VALUES ('088afa50-a767-425d-847c-f3fce0e10055', 'd4x26
 INSERT INTO `sys_captcha` VALUES ('08d2648a-5900-45f5-8a14-57ebdbaeb4d3', '2wwa5', '2023-01-12 14:34:35');
 INSERT INTO `sys_captcha` VALUES ('0918a29d-fd2b-4a21-886b-9b729a728bb0', '2pyma', '2023-02-26 23:06:58');
 INSERT INTO `sys_captcha` VALUES ('0b655d69-5da9-464f-8529-b1e53db3775c', 'g3xy3', '2023-01-06 16:42:10');
+INSERT INTO `sys_captcha` VALUES ('0bba6013-2f23-4afd-8273-f7e3fe3fb7c9', 'g8x3e', '2023-04-15 23:24:46');
 INSERT INTO `sys_captcha` VALUES ('0d4f226f-b036-4a88-8892-381434873c3f', 'ea235', '2023-02-27 13:12:54');
 INSERT INTO `sys_captcha` VALUES ('0e572992-b80d-4de8-831b-5b2f4db3bb2e', 'pmeg3', '2023-01-06 17:14:25');
 INSERT INTO `sys_captcha` VALUES ('13fed396-9fd4-4ab4-814e-0ce13c521240', '6wm47', '2023-02-27 12:30:02');
@@ -306,6 +345,7 @@ INSERT INTO `sys_captcha` VALUES ('e52b0d62-433e-497e-8ade-3fc60edadb30', '47c5d
 INSERT INTO `sys_captcha` VALUES ('e8ff9862-d657-482f-8fb2-bbc69163e37d', 'acxge', '2023-03-01 22:28:14');
 INSERT INTO `sys_captcha` VALUES ('e9b8030d-1eba-4c00-8cf0-b6381ea70cc9', 'b8f5n', '2023-01-12 14:24:44');
 INSERT INTO `sys_captcha` VALUES ('f2280695-56f5-47c6-8f77-9b008dc33a2a', 'xnea2', '2023-02-27 10:40:03');
+INSERT INTO `sys_captcha` VALUES ('f30b2ba7-5b04-4555-8965-fba1498226e4', 'mey32', '2023-03-21 10:02:54');
 INSERT INTO `sys_captcha` VALUES ('f6bfe435-3ac0-420f-8536-4abcd8463887', '3xmnx', '2023-02-26 23:05:15');
 INSERT INTO `sys_captcha` VALUES ('fbb0484a-afb6-420d-8ccd-1806619eecd8', 'nm7xy', '2023-01-12 14:16:21');
 INSERT INTO `sys_captcha` VALUES ('fe015d9d-eb00-4258-808b-b06d915c18b3', '2gbbb', '2023-01-06 17:18:07');
@@ -328,14 +368,17 @@ CREATE TABLE `sys_dept`  (
   `residual_num` int(0) NULL DEFAULT NULL COMMENT '剩余可预约人数',
   `description` varchar(2000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '描述',
   PRIMARY KEY (`dept_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '科室信息表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '科室信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_dept
 -- ----------------------------
-INSERT INTO `sys_dept` VALUES (1, '牙周科', 15, 1, '2023-03-03 14:12:57', 1, '2023-03-04 12:58:13', 'B5-301', '1', 'ys', 50, '牙周科');
-INSERT INTO `sys_dept` VALUES (6, '牙龈科', 122, 1, '2023-03-04 17:42:00', NULL, NULL, 'B5-306', '1', 'ys', 23, '1311515');
-INSERT INTO `sys_dept` VALUES (7, '口腔科', 10, 1, '2023-03-04 18:05:53', NULL, NULL, 'B5-402', '1', 'ys', 16, NULL);
+INSERT INTO `sys_dept` VALUES (1, '牙周科', 15, 1, '2023-03-03 14:12:57', 1, '2023-04-09 21:33:04', 'B5-301', '1', 'wtd1', 50, '牙周科');
+INSERT INTO `sys_dept` VALUES (6, '牙龈科', 122, 1, '2023-03-04 17:42:00', 1, '2023-04-09 21:32:57', 'B5-306', '1', 'wtd', 23, '1311515');
+INSERT INTO `sys_dept` VALUES (7, '口腔科', 10, 1, '2023-03-04 18:05:53', 1, '2023-04-09 21:32:12', 'B5-402', '1', 'yj', 16, NULL);
+INSERT INTO `sys_dept` VALUES (8, '儿科', 23, 1, '2023-04-05 23:13:00', NULL, NULL, 'A1-301', '1', 'ys', 23, 'awdda');
+INSERT INTO `sys_dept` VALUES (9, '成人口腔', 7, 1, '2023-04-09 21:38:26', 1, '2023-04-15 22:50:36', 'B8-603', '1', 'wtd', 23, 'sfseffesfs');
+INSERT INTO `sys_dept` VALUES (15, 'esfs', 21, 1, '2023-04-16 11:23:35', NULL, NULL, 'sef', '1', 'fes', 12, 'awd');
 
 -- ----------------------------
 -- Table structure for sys_drug
@@ -364,17 +407,19 @@ CREATE TABLE `sys_drug`  (
   `outbound_batch` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '出库批次',
   `status` int(0) NULL DEFAULT NULL COMMENT '0:未入库  1：已入库',
   PRIMARY KEY (`drug_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '药品信息表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '药品信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_drug
 -- ----------------------------
-INSERT INTO `sys_drug` VALUES (1, '三九感冒灵颗粒', '冲剂', '500g/一盒（5袋）', 200, 1, '2023-03-08 17:56:03', 1, '2023-03-09 23:46:50', '15.50', 'qedq', '977fa193-4e85-4d0e-99c3-b55191aed7ae.png', '每次1粒，每天3次', 'B5-301', '24', '王老吉集团', '2023-03-29 15:53:20', '2023-03-07 15:53:42', '1232', '1232', 1);
-INSERT INTO `sys_drug` VALUES (2, '葡萄糖酸钙锌口服溶液', '口服液', '10毫升*20支', 1000, 1, '2023-03-10 00:08:54', 1, '2023-03-10 00:09:04', '29.00', 'awdadwa', '14d6a6e0-f8e6-49e2-bd1d-06e2a2db3a6c.jpg', '每次1粒，每天3次', 'B5-301', '24', '王老吉集团', '2023-03-11 15:53:38', '2023-03-07 15:53:42', '1232', '1232', 1);
-INSERT INTO `sys_drug` VALUES (3, '九九九强力枇杷露', '口服液', '500毫升/1支', 10, 1, '2023-03-08 22:43:09', 1, '2023-03-09 23:43:21', '50.00', '止咳糖浆', '64ace7d6-724a-4b66-b6b2-514d018307c4.png', '每次1粒，每天3次', 'B5-301', '24', '王老吉集团', '2023-03-25 15:53:28', '2023-03-07 15:53:42', '1232', '1232', 1);
-INSERT INTO `sys_drug` VALUES (7, 'awddwww', '冲剂', '1231', 26, 1, '2023-03-09 23:56:03', 1, '2023-03-09 20:48:19', '131.11', '31211', NULL, '每次1粒，每天3次', 'B5-301', '24', 'wasdawd', '2023-03-18 15:53:31', '2023-03-07 15:53:42', '235', '1232', 0);
-INSERT INTO `sys_drug` VALUES (8, 'adwfgrg', '口服液', 'awdad', 51, 1, '2023-03-09 23:56:45', 1, '2023-03-09 20:48:01', '153.32', 'wadwad', NULL, '每次1粒，每天3次', 'B5-301', '24', 'adda', '2023-03-18 15:53:34', '2023-03-07 15:53:42', '2365', '1232', 0);
-INSERT INTO `sys_drug` VALUES (9, 'awdad', '冲剂', 'adwad', 9, 1, '2023-03-09 15:10:18', 1, '2023-03-09 23:51:09', '53.32', 'awdawwd', 'efe4f6b9-c7d9-4857-ac31-49b0fe515908.png', '每次1粒，每天3次', 'B5-301', '24', '王老吉集团', '2023-03-11 15:53:38', '2023-03-07 15:53:42', '1232', '1232', 1);
+INSERT INTO `sys_drug` VALUES (1, '三九感冒灵颗粒', '冲剂', '500g/一盒（5袋）', 1, 1, '2023-04-15 23:05:42', 1, '2023-04-15 23:06:23', '15.50', 'qedq', '977fa193-4e85-4d0e-99c3-b55191aed7ae.png', '每次1粒，每天3次', 'B5-301', '24', 'grdgd', '2023-03-13 00:00:00', '2023-03-07 15:53:42', '2324', '599', 0);
+INSERT INTO `sys_drug` VALUES (2, '葡萄糖酸钙锌口服溶液', '口服液', '10毫升*20支', 1000, 1, '2023-03-10 00:08:54', 1, '2023-03-10 00:09:04', '29.00', 'awdadwa', '14d6a6e0-f8e6-49e2-bd1d-06e2a2db3a6c.jpg', '每次1粒，每天3次', 'B5-301', '24', '王老吉集团', '2023-03-11 15:53:38', '2023-03-07 15:53:42', '12387', '478', 1);
+INSERT INTO `sys_drug` VALUES (3, '九九九强力枇杷露', '口服液', '500毫升/1支', 10, 1, '2023-03-08 22:43:09', 1, '2023-03-09 23:43:21', '50.00', '止咳糖浆', '64ace7d6-724a-4b66-b6b2-514d018307c4.png', '每次1粒，每天3次', 'B5-301', '24', '王老吉集团', '2023-03-25 15:53:28', '2023-03-07 15:53:42', '123285', '8888', 1);
+INSERT INTO `sys_drug` VALUES (7, 'awddwww', '冲剂', '1231', 26, 1, '2023-03-09 23:56:03', 1, '2023-03-09 20:48:19', '131.11', '31211', NULL, '每次1粒，每天3次', 'B5-301', '24', 'wasdawd', '2023-03-18 15:53:31', '2023-03-07 15:53:42', '2358', '7777', 0);
+INSERT INTO `sys_drug` VALUES (8, 'adwfgrg', '口服液', 'awdad', 51, 1, '2023-03-09 23:56:45', 1, '2023-03-09 20:48:01', '153.32', 'wadwad', NULL, '每次1粒，每天3次', 'B5-301', '24', 'adda', '2023-03-18 15:53:34', '2023-03-07 15:53:42', '2365', '775', 0);
+INSERT INTO `sys_drug` VALUES (9, 'awdad', '冲剂', 'adwad', 9, 1, '2023-03-09 15:10:18', 1, '2023-03-09 23:51:09', '53.32', 'awdawwd', 'efe4f6b9-c7d9-4857-ac31-49b0fe515908.png', '每次1粒，每天3次', 'B5-301', '24', '王老吉集团', '2023-03-11 15:53:38', '2023-03-07 15:53:42', '12328', '1232', 1);
+INSERT INTO `sys_drug` VALUES (10, 'LOOK光明', '冲剂', 'dsffsf', 703, 1, '2023-04-09 21:44:02', 1, '2023-04-09 21:51:02', '12', 'dwadww', '8e7a5de9-9b3b-4e0b-b0b9-577fe2d6774c.jpg', 'awdawd', 'awd', 'awdw', 'vhgvhg', '2023-04-19 00:00:00', '2023-04-04 00:59:00', '2341', '1455', 1);
+INSERT INTO `sys_drug` VALUES (13, 'awd', '口服液', 'sef', 23, 1, '2023-04-16 11:24:02', NULL, NULL, '23', NULL, NULL, 'fsef', 'sef', 'sef', 'esf', NULL, NULL, NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for sys_file
@@ -389,7 +434,7 @@ CREATE TABLE `sys_file`  (
   `status` int(0) NOT NULL COMMENT '1:图片文件  0：文档',
   `file_time` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`file_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 52 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统文件信息表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 61 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统文件信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_file
@@ -404,6 +449,19 @@ INSERT INTO `sys_file` VALUES (49, NULL, 3, 'c0081790-45b2-4535-8f8a-587d3d3236c
 INSERT INTO `sys_file` VALUES (50, NULL, 3, '19f63e20-6491-4f85-90c9-e970019da81e.txt', 0, 0, '2023-03-11 16:49:16');
 INSERT INTO `sys_file` VALUES (51, NULL, 3, 'c56a4062-1797-40bc-9f32-cac4ffba722c.txt', 0, 0, '2023-03-11 16:49:16');
 INSERT INTO `sys_file` VALUES (52, NULL, 3, 'c0da834a-6874-4072-8733-5c4648c2d352.txt', 0, 0, '2023-03-11 16:49:16');
+INSERT INTO `sys_file` VALUES (53, 'blob:http://localhost:8081/888a62b8-45b8-4117-96ea-88b47f2f61e4', 7, '4c8a46f3-2605-4f69-ae34-7b3ad25d262a.png', 18511, 1, '2023-03-27 22:27:39');
+INSERT INTO `sys_file` VALUES (54, 'blob:http://localhost:8081/18772b28-6461-49be-be23-3ba2a2c3b030', 9, '65c4cd9d-d9cc-4380-8117-2c4d5c990e7f.jpg', 937407, 1, '2023-04-01 14:00:59');
+INSERT INTO `sys_file` VALUES (55, 'blob:http://localhost:8081/d07bf01a-f7c7-40fe-b6e2-9b39414b0df9', 14, '05255e85-a521-4ef6-a57f-15ee489fab3d.jpg', 1141791, 1, '2023-04-09 21:40:27');
+INSERT INTO `sys_file` VALUES (56, 'blob:http://localhost:8081/d07bf01a-f7c7-40fe-b6e2-9b39414b0df9', 10, '05255e85-a521-4ef6-a57f-15ee489fab3d.jpg', 1141791, 1, '2023-04-09 21:40:56');
+INSERT INTO `sys_file` VALUES (57, 'blob:http://localhost:8081/d07bf01a-f7c7-40fe-b6e2-9b39414b0df9', 11, '05255e85-a521-4ef6-a57f-15ee489fab3d.jpg', 1141791, 1, '2023-04-09 21:41:06');
+INSERT INTO `sys_file` VALUES (58, 'blob:http://localhost:8081/d07bf01a-f7c7-40fe-b6e2-9b39414b0df9', 12, '05255e85-a521-4ef6-a57f-15ee489fab3d.jpg', 1141791, 1, '2023-04-09 21:41:11');
+INSERT INTO `sys_file` VALUES (59, NULL, 9, '52d01a32-2d5a-4930-98db-d5a6a689e64e.txt', 0, 0, '2023-04-09 21:41:41');
+INSERT INTO `sys_file` VALUES (60, NULL, 9, '51c9b078-a158-4fcc-9a7c-e8f06bdecf65.txt', 0, 0, '2023-04-09 21:41:41');
+INSERT INTO `sys_file` VALUES (61, 'blob:http://localhost:8081/358751c8-8b1f-42a9-8acb-038a96377910', 16, 'aa7f9173-3e7e-4cdb-ab48-5ec5701a09f6.png', 120933, 1, '2023-04-15 22:57:47');
+INSERT INTO `sys_file` VALUES (62, NULL, 2, 'f98372ac-5aeb-4370-8c84-1624f8862ec5.txt', 0, 0, '2023-04-15 22:59:32');
+INSERT INTO `sys_file` VALUES (63, NULL, 3, 'f98372ac-5aeb-4370-8c84-1624f8862ec5.txt', 0, 0, '2023-04-15 22:59:47');
+INSERT INTO `sys_file` VALUES (64, NULL, 3, 'cb4ae485-c2a4-4b27-8144-40fbf621ffb5.txt', 0, 0, '2023-04-15 22:59:47');
+INSERT INTO `sys_file` VALUES (65, NULL, 2, 'c785885a-d1b8-47eb-a690-31d1701a78ee.txt', 0, 0, '2023-04-15 23:00:39');
 
 -- ----------------------------
 -- Table structure for sys_gh
@@ -420,15 +478,20 @@ CREATE TABLE `sys_gh`  (
   `modify_user_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `modify_time` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`gh_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '患者挂号信息表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 26 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '患者挂号信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_gh
 -- ----------------------------
 INSERT INTO `sys_gh` VALUES (1, '1', '2023-02-27 16:06:13', 2, 'aaa', NULL, NULL, '1', '2023-02-28 21:47:08');
 INSERT INTO `sys_gh` VALUES (2, '2', '2023-02-28 10:01:15', 2, 'bbb', NULL, NULL, NULL, NULL);
-INSERT INTO `sys_gh` VALUES (11, '202303160025320561', '2023-03-16 00:26:06', 2, 'www', '202303160025320561', '2023-03-16 00:26:06', '1', '2023-03-16 00:41:12');
+INSERT INTO `sys_gh` VALUES (11, '202303160025320561', '2023-03-16 00:26:06', 0, 'www', '202303160025320561', '2023-03-16 00:26:06', '1', '2023-03-16 00:41:12');
 INSERT INTO `sys_gh` VALUES (12, '202303160041530746', '2023-03-16 00:40:43', 2, 'kkk', '202303160041530746', '2023-03-16 00:40:43', NULL, NULL);
+INSERT INTO `sys_gh` VALUES (17, '202303160025320561', '2023-03-20 20:40:35', 0, 'www', '202303160025320561', '2023-03-20 20:40:35', NULL, NULL);
+INSERT INTO `sys_gh` VALUES (22, '202303160025320561', '2023-04-02 13:19:25', 0, 'Ww', '202303160025320561', '2023-04-02 13:19:25', '1', '2023-04-02 13:20:44');
+INSERT INTO `sys_gh` VALUES (23, '202303160025320561', '2023-04-09 21:26:46', 0, 'www', '202303160025320561', '2023-04-09 21:26:46', '1', '2023-04-09 21:31:23');
+INSERT INTO `sys_gh` VALUES (24, '202303160041530746', '2023-04-09 21:30:00', 2, 'wewe', '202303160041530746', '2023-04-09 21:30:00', NULL, NULL);
+INSERT INTO `sys_gh` VALUES (30, '202303160025320561', '2023-04-16 11:21:26', 0, 'www', '202303160025320561', '2023-04-16 11:21:26', NULL, NULL);
 
 -- ----------------------------
 -- Table structure for sys_log
@@ -444,7 +507,7 @@ CREATE TABLE `sys_log`  (
   `ip` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'IP地址',
   `create_date` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 116 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '系统日志' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 128 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '系统日志' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_log
@@ -565,6 +628,17 @@ INSERT INTO `sys_log` VALUES (113, 'admin', '修改用户', 'itw.oralboot.module
 INSERT INTO `sys_log` VALUES (114, 'admin', '修改用户', 'itw.oralboot.modules.sys.controller.SysUserController.update()', '[{\"userId\":10,\"username\":\"yj\",\"salt\":\"rYiWHPZ3GAdCqVqshZG5\",\"name\":\"yj\",\"flag\":\"0\",\"email\":\"12345@163.com\",\"mobile\":\"15646235956\",\"status\":1,\"roleIdList\":[2,1],\"createUserId\":1}]', 11, '0:0:0:0:0:0:0:1', '2023-03-12 19:32:38');
 INSERT INTO `sys_log` VALUES (115, 'wtd', '保存角色', 'itw.oralboot.modules.sys.controller.SysRoleController.save()', '[{\"roleId\":4,\"roleName\":\"管理员\",\"remark\":\"超级管理员\",\"createUserId\":11,\"menuIdList\":[42,43,44,38,39,45,46,47,48,50,51,52,53,54,55,56,57,1,2,15,16,17,18,3,19,20,21,22,4,23,24,25,26,29,14,-666666],\"createTime\":\"Mar 12, 2023 7:34:47 PM\"}]', 72, '0:0:0:0:0:0:0:1', '2023-03-12 19:34:48');
 INSERT INTO `sys_log` VALUES (116, 'wtd', '保存用户', 'itw.oralboot.modules.sys.controller.SysUserController.save()', '[{\"userId\":12,\"username\":\"wtd1\",\"password\":\"56d512320b756b57279a5544ccd8734c4c20b19f6cf069f03ce8832b0e0e4116\",\"salt\":\"uXK2ra7DHnoPv6RwRU1o\",\"name\":\"wtd1\",\"flag\":\"0\",\"email\":\"W535410086@163.com\",\"mobile\":\"19854802938\",\"status\":1,\"roleIdList\":[4],\"createUserId\":11,\"createTime\":\"Mar 12, 2023 7:35:26 PM\"}]', 19, '0:0:0:0:0:0:0:1', '2023-03-12 19:35:26');
+INSERT INTO `sys_log` VALUES (117, 'admin', '修改用户', 'itw.oralboot.modules.sys.controller.SysUserController.update()', '[{\"userId\":2,\"username\":\"ys\",\"salt\":\"YzcmCZNvbXocrsz9dm8e\",\"name\":\"ys\",\"flag\":\"0\",\"email\":\"root@renren.io\",\"mobile\":\"12356458995\",\"status\":1,\"roleIdList\":[1],\"createUserId\":1}]', 102, '0:0:0:0:0:0:0:1', '2023-04-01 14:04:49');
+INSERT INTO `sys_log` VALUES (118, 'admin', '修改角色', 'itw.oralboot.modules.sys.controller.SysRoleController.update()', '[{\"roleId\":4,\"roleName\":\"超级管理员\",\"remark\":\"超级管理员\",\"createUserId\":1,\"menuIdList\":[42,43,44,38,39,45,46,47,48,50,51,52,53,54,55,56,57,1,2,15,16,17,18,3,19,20,21,22,4,23,24,25,26,29,14,-666666]}]', 762, '0:0:0:0:0:0:0:1', '2023-04-01 17:05:59');
+INSERT INTO `sys_log` VALUES (119, 'admin', '修改角色', 'itw.oralboot.modules.sys.controller.SysRoleController.update()', '[{\"roleId\":3,\"roleName\":\"管理员\",\"remark\":\"医院管理员\",\"createUserId\":1,\"menuIdList\":[42,43,44,38,39,45,46,47,48,50,51,52,53,54,55,56,57,1,2,15,16,17,18,3,19,20,21,22,4,23,24,25,26,29,14,-666666]}]', 91, '0:0:0:0:0:0:0:1', '2023-04-01 17:06:12');
+INSERT INTO `sys_log` VALUES (120, 'admin', '修改角色', 'itw.oralboot.modules.sys.controller.SysRoleController.update()', '[{\"roleId\":3,\"roleName\":\"管理员\",\"remark\":\"系统管理员\",\"createUserId\":1,\"menuIdList\":[42,43,44,38,39,45,46,47,48,50,51,52,53,54,55,56,57,1,2,15,16,17,18,3,19,20,21,22,4,23,24,25,26,29,14,-666666]}]', 99, '0:0:0:0:0:0:0:1', '2023-04-01 17:06:24');
+INSERT INTO `sys_log` VALUES (121, 'admin', '保存用户', 'itw.oralboot.modules.sys.controller.SysUserController.save()', '[{\"userId\":13,\"username\":\"caiwu\",\"password\":\"c665b7606e5c03900bac461e8682109485d6ffc99424bf85b5e847e27580a0b2\",\"salt\":\"PfKWfUMhmvyVDUTOqWiP\",\"name\":\"财务员\",\"email\":\"12363@163.com\",\"mobile\":\"18465236526\",\"status\":1,\"roleIdList\":[],\"createUserId\":1,\"createTime\":\"Apr 2, 2023 1:07:20 PM\"}]', 264, '0:0:0:0:0:0:0:1', '2023-04-02 13:07:21');
+INSERT INTO `sys_log` VALUES (122, 'admin', '保存角色', 'itw.oralboot.modules.sys.controller.SysRoleController.save()', '[{\"roleId\":5,\"roleName\":\"财务员\",\"remark\":\"财务员\",\"createUserId\":1,\"menuIdList\":[48,50,51,52,53,54,-666666],\"createTime\":\"Apr 2, 2023 1:07:47 PM\"}]', 43, '0:0:0:0:0:0:0:1', '2023-04-02 13:07:48');
+INSERT INTO `sys_log` VALUES (123, 'admin', '保存角色', 'itw.oralboot.modules.sys.controller.SysRoleController.save()', '[{\"roleId\":6,\"roleName\":\"药物管理员\",\"remark\":\"药物管理员\",\"createUserId\":1,\"menuIdList\":[48,50,51,52,-666666],\"createTime\":\"Apr 2, 2023 1:08:07 PM\"}]', 22, '0:0:0:0:0:0:0:1', '2023-04-02 13:08:07');
+INSERT INTO `sys_log` VALUES (124, 'admin', '修改角色', 'itw.oralboot.modules.sys.controller.SysRoleController.update()', '[{\"roleId\":3,\"roleName\":\"系统管理员\",\"remark\":\"系统管理员\",\"createUserId\":1,\"menuIdList\":[42,43,44,38,39,45,46,47,48,50,51,52,53,54,55,56,57,1,2,15,16,17,18,3,19,20,21,22,4,23,24,25,26,29,14,-666666]}]', 110, '0:0:0:0:0:0:0:1', '2023-04-02 13:08:29');
+INSERT INTO `sys_log` VALUES (125, 'admin', '保存用户', 'itw.oralboot.modules.sys.controller.SysUserController.save()', '[{\"userId\":14,\"username\":\"yaowu\",\"password\":\"6957fe67599f8351c500a4313ee1081ea5d8fd87d541bfb1cc06edb490415d56\",\"salt\":\"tP8StQEdtIMKV0rxj44x\",\"name\":\"药物管理员\",\"flag\":\"0\",\"email\":\"115649@163.com\",\"mobile\":\"19564536203\",\"status\":1,\"roleIdList\":[6],\"createUserId\":1,\"createTime\":\"Apr 2, 2023 1:09:07 PM\"}]', 19, '0:0:0:0:0:0:0:1', '2023-04-02 13:09:07');
+INSERT INTO `sys_log` VALUES (126, 'admin', '修改用户', 'itw.oralboot.modules.sys.controller.SysUserController.update()', '[{\"userId\":10,\"username\":\"yj\",\"salt\":\"rYiWHPZ3GAdCqVqshZG5\",\"name\":\"yj\",\"flag\":\"0\",\"email\":\"12345@163.com\",\"mobile\":\"15646235956\",\"status\":1,\"roleIdList\":[2],\"createUserId\":1}]', 24, '0:0:0:0:0:0:0:1', '2023-04-02 13:09:25');
+INSERT INTO `sys_log` VALUES (127, 'admin', '保存用户', 'itw.oralboot.modules.sys.controller.SysUserController.save()', '[{\"userId\":15,\"username\":\"admin1\",\"password\":\"3861b495228de241191a0028d483acec3f25b0ef57b6576c7672f7f4a06ae274\",\"salt\":\"YOFiGYvcBGfZPwaZ42fg\",\"name\":\"wada\",\"flag\":\"0\",\"email\":\"awd@163.com\",\"mobile\":\"18219353636\",\"status\":1,\"roleIdList\":[2,3,4],\"createUserId\":1,\"createTime\":\"Apr 2, 2023 1:25:11 PM\"}]', 19, '0:0:0:0:0:0:0:1', '2023-04-02 13:25:11');
 
 -- ----------------------------
 -- Table structure for sys_menu
@@ -580,7 +654,7 @@ CREATE TABLE `sys_menu`  (
   `icon` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '菜单图标',
   `order_num` int(0) NULL DEFAULT NULL COMMENT '排序',
   PRIMARY KEY (`menu_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 57 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '菜单管理' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 58 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '菜单管理' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_menu
@@ -632,15 +706,17 @@ CREATE TABLE `sys_role`  (
   `create_user_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '创建者ID',
   `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`role_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '角色' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '角色' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_role
 -- ----------------------------
 INSERT INTO `sys_role` VALUES (1, '医生', '牙周科', '1', '2023-03-12 15:56:50');
 INSERT INTO `sys_role` VALUES (2, '药剂师', '药剂师', '1', '2023-03-12 17:05:31');
-INSERT INTO `sys_role` VALUES (3, '管理员', '超级管理员', '1', '2023-03-12 19:23:01');
-INSERT INTO `sys_role` VALUES (4, '管理员', '超级管理员', '11', '2023-03-12 19:34:48');
+INSERT INTO `sys_role` VALUES (3, '系统管理员', '系统管理员', '1', '2023-03-12 19:23:01');
+INSERT INTO `sys_role` VALUES (4, '超级管理员', '超级管理员', '1', '2023-03-12 19:34:48');
+INSERT INTO `sys_role` VALUES (5, '财务员', '财务员', '1', '2023-04-02 13:07:48');
+INSERT INTO `sys_role` VALUES (6, '药物管理员', '药物管理员', '1', '2023-04-02 13:08:07');
 
 -- ----------------------------
 -- Table structure for sys_role_menu
@@ -651,7 +727,7 @@ CREATE TABLE `sys_role_menu`  (
   `role_id` bigint(0) NULL DEFAULT NULL COMMENT '角色ID',
   `menu_id` bigint(0) NULL DEFAULT NULL COMMENT '菜单ID',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 97 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '角色与菜单对应关系' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 254 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '角色与菜单对应关系' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_role_menu
@@ -672,78 +748,90 @@ INSERT INTO `sys_role_menu` VALUES (22, 1, 47);
 INSERT INTO `sys_role_menu` VALUES (23, 1, 56);
 INSERT INTO `sys_role_menu` VALUES (24, 1, -666666);
 INSERT INTO `sys_role_menu` VALUES (25, 1, 55);
-INSERT INTO `sys_role_menu` VALUES (26, 3, 42);
-INSERT INTO `sys_role_menu` VALUES (27, 3, 43);
-INSERT INTO `sys_role_menu` VALUES (28, 3, 44);
-INSERT INTO `sys_role_menu` VALUES (29, 3, 38);
-INSERT INTO `sys_role_menu` VALUES (30, 3, 39);
-INSERT INTO `sys_role_menu` VALUES (31, 3, 45);
-INSERT INTO `sys_role_menu` VALUES (32, 3, 46);
-INSERT INTO `sys_role_menu` VALUES (33, 3, 47);
-INSERT INTO `sys_role_menu` VALUES (34, 3, 48);
-INSERT INTO `sys_role_menu` VALUES (35, 3, 50);
-INSERT INTO `sys_role_menu` VALUES (36, 3, 51);
-INSERT INTO `sys_role_menu` VALUES (37, 3, 52);
-INSERT INTO `sys_role_menu` VALUES (38, 3, 53);
-INSERT INTO `sys_role_menu` VALUES (39, 3, 54);
-INSERT INTO `sys_role_menu` VALUES (40, 3, 55);
-INSERT INTO `sys_role_menu` VALUES (41, 3, 56);
-INSERT INTO `sys_role_menu` VALUES (42, 3, 57);
-INSERT INTO `sys_role_menu` VALUES (43, 3, 1);
-INSERT INTO `sys_role_menu` VALUES (44, 3, 2);
-INSERT INTO `sys_role_menu` VALUES (45, 3, 15);
-INSERT INTO `sys_role_menu` VALUES (46, 3, 16);
-INSERT INTO `sys_role_menu` VALUES (47, 3, 17);
-INSERT INTO `sys_role_menu` VALUES (48, 3, 18);
-INSERT INTO `sys_role_menu` VALUES (49, 3, 3);
-INSERT INTO `sys_role_menu` VALUES (50, 3, 19);
-INSERT INTO `sys_role_menu` VALUES (51, 3, 20);
-INSERT INTO `sys_role_menu` VALUES (52, 3, 21);
-INSERT INTO `sys_role_menu` VALUES (53, 3, 22);
-INSERT INTO `sys_role_menu` VALUES (54, 3, 4);
-INSERT INTO `sys_role_menu` VALUES (55, 3, 23);
-INSERT INTO `sys_role_menu` VALUES (56, 3, 24);
-INSERT INTO `sys_role_menu` VALUES (57, 3, 25);
-INSERT INTO `sys_role_menu` VALUES (58, 3, 26);
-INSERT INTO `sys_role_menu` VALUES (59, 3, 29);
-INSERT INTO `sys_role_menu` VALUES (60, 3, 14);
-INSERT INTO `sys_role_menu` VALUES (61, 3, -666666);
-INSERT INTO `sys_role_menu` VALUES (62, 4, 42);
-INSERT INTO `sys_role_menu` VALUES (63, 4, 43);
-INSERT INTO `sys_role_menu` VALUES (64, 4, 44);
-INSERT INTO `sys_role_menu` VALUES (65, 4, 38);
-INSERT INTO `sys_role_menu` VALUES (66, 4, 39);
-INSERT INTO `sys_role_menu` VALUES (67, 4, 45);
-INSERT INTO `sys_role_menu` VALUES (68, 4, 46);
-INSERT INTO `sys_role_menu` VALUES (69, 4, 47);
-INSERT INTO `sys_role_menu` VALUES (70, 4, 48);
-INSERT INTO `sys_role_menu` VALUES (71, 4, 50);
-INSERT INTO `sys_role_menu` VALUES (72, 4, 51);
-INSERT INTO `sys_role_menu` VALUES (73, 4, 52);
-INSERT INTO `sys_role_menu` VALUES (74, 4, 53);
-INSERT INTO `sys_role_menu` VALUES (75, 4, 54);
-INSERT INTO `sys_role_menu` VALUES (76, 4, 55);
-INSERT INTO `sys_role_menu` VALUES (77, 4, 56);
-INSERT INTO `sys_role_menu` VALUES (78, 4, 57);
-INSERT INTO `sys_role_menu` VALUES (79, 4, 1);
-INSERT INTO `sys_role_menu` VALUES (80, 4, 2);
-INSERT INTO `sys_role_menu` VALUES (81, 4, 15);
-INSERT INTO `sys_role_menu` VALUES (82, 4, 16);
-INSERT INTO `sys_role_menu` VALUES (83, 4, 17);
-INSERT INTO `sys_role_menu` VALUES (84, 4, 18);
-INSERT INTO `sys_role_menu` VALUES (85, 4, 3);
-INSERT INTO `sys_role_menu` VALUES (86, 4, 19);
-INSERT INTO `sys_role_menu` VALUES (87, 4, 20);
-INSERT INTO `sys_role_menu` VALUES (88, 4, 21);
-INSERT INTO `sys_role_menu` VALUES (89, 4, 22);
-INSERT INTO `sys_role_menu` VALUES (90, 4, 4);
-INSERT INTO `sys_role_menu` VALUES (91, 4, 23);
-INSERT INTO `sys_role_menu` VALUES (92, 4, 24);
-INSERT INTO `sys_role_menu` VALUES (93, 4, 25);
-INSERT INTO `sys_role_menu` VALUES (94, 4, 26);
-INSERT INTO `sys_role_menu` VALUES (95, 4, 29);
-INSERT INTO `sys_role_menu` VALUES (96, 4, 14);
-INSERT INTO `sys_role_menu` VALUES (97, 4, -666666);
+INSERT INTO `sys_role_menu` VALUES (98, 4, 42);
+INSERT INTO `sys_role_menu` VALUES (99, 4, 43);
+INSERT INTO `sys_role_menu` VALUES (100, 4, 44);
+INSERT INTO `sys_role_menu` VALUES (101, 4, 38);
+INSERT INTO `sys_role_menu` VALUES (102, 4, 39);
+INSERT INTO `sys_role_menu` VALUES (103, 4, 45);
+INSERT INTO `sys_role_menu` VALUES (104, 4, 46);
+INSERT INTO `sys_role_menu` VALUES (105, 4, 47);
+INSERT INTO `sys_role_menu` VALUES (106, 4, 48);
+INSERT INTO `sys_role_menu` VALUES (107, 4, 50);
+INSERT INTO `sys_role_menu` VALUES (108, 4, 51);
+INSERT INTO `sys_role_menu` VALUES (109, 4, 52);
+INSERT INTO `sys_role_menu` VALUES (110, 4, 53);
+INSERT INTO `sys_role_menu` VALUES (111, 4, 54);
+INSERT INTO `sys_role_menu` VALUES (112, 4, 55);
+INSERT INTO `sys_role_menu` VALUES (113, 4, 56);
+INSERT INTO `sys_role_menu` VALUES (114, 4, 57);
+INSERT INTO `sys_role_menu` VALUES (115, 4, 1);
+INSERT INTO `sys_role_menu` VALUES (116, 4, 2);
+INSERT INTO `sys_role_menu` VALUES (117, 4, 15);
+INSERT INTO `sys_role_menu` VALUES (118, 4, 16);
+INSERT INTO `sys_role_menu` VALUES (119, 4, 17);
+INSERT INTO `sys_role_menu` VALUES (120, 4, 18);
+INSERT INTO `sys_role_menu` VALUES (121, 4, 3);
+INSERT INTO `sys_role_menu` VALUES (122, 4, 19);
+INSERT INTO `sys_role_menu` VALUES (123, 4, 20);
+INSERT INTO `sys_role_menu` VALUES (124, 4, 21);
+INSERT INTO `sys_role_menu` VALUES (125, 4, 22);
+INSERT INTO `sys_role_menu` VALUES (126, 4, 4);
+INSERT INTO `sys_role_menu` VALUES (127, 4, 23);
+INSERT INTO `sys_role_menu` VALUES (128, 4, 24);
+INSERT INTO `sys_role_menu` VALUES (129, 4, 25);
+INSERT INTO `sys_role_menu` VALUES (130, 4, 26);
+INSERT INTO `sys_role_menu` VALUES (131, 4, 29);
+INSERT INTO `sys_role_menu` VALUES (132, 4, 14);
+INSERT INTO `sys_role_menu` VALUES (133, 4, -666666);
+INSERT INTO `sys_role_menu` VALUES (206, 5, 48);
+INSERT INTO `sys_role_menu` VALUES (207, 5, 50);
+INSERT INTO `sys_role_menu` VALUES (208, 5, 51);
+INSERT INTO `sys_role_menu` VALUES (209, 5, 52);
+INSERT INTO `sys_role_menu` VALUES (210, 5, 53);
+INSERT INTO `sys_role_menu` VALUES (211, 5, 54);
+INSERT INTO `sys_role_menu` VALUES (212, 5, -666666);
+INSERT INTO `sys_role_menu` VALUES (213, 6, 48);
+INSERT INTO `sys_role_menu` VALUES (214, 6, 50);
+INSERT INTO `sys_role_menu` VALUES (215, 6, 51);
+INSERT INTO `sys_role_menu` VALUES (216, 6, 52);
+INSERT INTO `sys_role_menu` VALUES (217, 6, -666666);
+INSERT INTO `sys_role_menu` VALUES (218, 3, 42);
+INSERT INTO `sys_role_menu` VALUES (219, 3, 43);
+INSERT INTO `sys_role_menu` VALUES (220, 3, 44);
+INSERT INTO `sys_role_menu` VALUES (221, 3, 38);
+INSERT INTO `sys_role_menu` VALUES (222, 3, 39);
+INSERT INTO `sys_role_menu` VALUES (223, 3, 45);
+INSERT INTO `sys_role_menu` VALUES (224, 3, 46);
+INSERT INTO `sys_role_menu` VALUES (225, 3, 47);
+INSERT INTO `sys_role_menu` VALUES (226, 3, 48);
+INSERT INTO `sys_role_menu` VALUES (227, 3, 50);
+INSERT INTO `sys_role_menu` VALUES (228, 3, 51);
+INSERT INTO `sys_role_menu` VALUES (229, 3, 52);
+INSERT INTO `sys_role_menu` VALUES (230, 3, 53);
+INSERT INTO `sys_role_menu` VALUES (231, 3, 54);
+INSERT INTO `sys_role_menu` VALUES (232, 3, 55);
+INSERT INTO `sys_role_menu` VALUES (233, 3, 56);
+INSERT INTO `sys_role_menu` VALUES (234, 3, 57);
+INSERT INTO `sys_role_menu` VALUES (235, 3, 1);
+INSERT INTO `sys_role_menu` VALUES (236, 3, 2);
+INSERT INTO `sys_role_menu` VALUES (237, 3, 15);
+INSERT INTO `sys_role_menu` VALUES (238, 3, 16);
+INSERT INTO `sys_role_menu` VALUES (239, 3, 17);
+INSERT INTO `sys_role_menu` VALUES (240, 3, 18);
+INSERT INTO `sys_role_menu` VALUES (241, 3, 3);
+INSERT INTO `sys_role_menu` VALUES (242, 3, 19);
+INSERT INTO `sys_role_menu` VALUES (243, 3, 20);
+INSERT INTO `sys_role_menu` VALUES (244, 3, 21);
+INSERT INTO `sys_role_menu` VALUES (245, 3, 22);
+INSERT INTO `sys_role_menu` VALUES (246, 3, 4);
+INSERT INTO `sys_role_menu` VALUES (247, 3, 23);
+INSERT INTO `sys_role_menu` VALUES (248, 3, 24);
+INSERT INTO `sys_role_menu` VALUES (249, 3, 25);
+INSERT INTO `sys_role_menu` VALUES (250, 3, 26);
+INSERT INTO `sys_role_menu` VALUES (251, 3, 29);
+INSERT INTO `sys_role_menu` VALUES (252, 3, 14);
+INSERT INTO `sys_role_menu` VALUES (253, 3, -666666);
 
 -- ----------------------------
 -- Table structure for sys_user
@@ -766,16 +854,19 @@ CREATE TABLE `sys_user`  (
   `flag` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '1:超级管理员 0：医护人员',
   PRIMARY KEY (`user_id`) USING BTREE,
   UNIQUE INDEX `username`(`username`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '系统用户' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 16 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '系统用户' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
 INSERT INTO `sys_user` VALUES (1, 'admin', 'cdac762d0ba79875489f6a8b430fa8b5dfe0cdd81da38b80f02f33328af7fd4a', 'YzcmCZNvbXocrsz9dm8e', 'root@renren.io', '13612345678', 1, 1, '2016-11-11 11:11:11', 'admin', 1, NULL, NULL, '1');
 INSERT INTO `sys_user` VALUES (2, 'ys', 'cdac762d0ba79875489f6a8b430fa8b5dfe0cdd81da38b80f02f33328af7fd4a', 'YzcmCZNvbXocrsz9dm8e', 'root@renren.io', '12356458995', 1, 1, '2023-02-28 23:41:29', 'ys', 1, NULL, NULL, '0');
-INSERT INTO `sys_user` VALUES (10, 'yj', 'b09b39d6bf194ee7f369f080fb655f18d60cd6ae3b4e48f3c36db4c3f374cfbf', 'rYiWHPZ3GAdCqVqshZG5', '12345@163.com', '15646235956', 1, 1, '2023-03-12 19:11:15', 'yj', NULL, NULL, NULL, '0');
-INSERT INTO `sys_user` VALUES (11, 'wtd', '9673f273404b4ef455fcd0a049e29766640a21ed334e7245909ab005badc07af', 'xTDVZIBcCS4G0Dfl99tC', '2357996956@qq.com', '18219135363', 1, 1, '2023-03-12 19:15:27', 'wtd', NULL, NULL, NULL, '1');
-INSERT INTO `sys_user` VALUES (12, 'wtd1', '56d512320b756b57279a5544ccd8734c4c20b19f6cf069f03ce8832b0e0e4116', 'uXK2ra7DHnoPv6RwRU1o', 'W535410086@163.com', '19854802938', 1, 11, '2023-03-12 19:35:26', 'wtd1', NULL, NULL, NULL, '1');
+INSERT INTO `sys_user` VALUES (10, 'yj', 'b09b39d6bf194ee7f369f080fb655f18d60cd6ae3b4e48f3c36db4c3f374cfbf', 'rYiWHPZ3GAdCqVqshZG5', '12345@163.com', '15646235956', 1, 1, '2023-03-12 19:11:15', 'yj', 0, NULL, NULL, '0');
+INSERT INTO `sys_user` VALUES (11, 'wtd', '9673f273404b4ef455fcd0a049e29766640a21ed334e7245909ab005badc07af', 'xTDVZIBcCS4G0Dfl99tC', '2357996956@qq.com', '18219135363', 1, 1, '2023-03-12 19:15:27', 'wtd', 1, NULL, NULL, '1');
+INSERT INTO `sys_user` VALUES (12, 'wtd1', '56d512320b756b57279a5544ccd8734c4c20b19f6cf069f03ce8832b0e0e4116', 'uXK2ra7DHnoPv6RwRU1o', 'W535410086@163.com', '19854802938', 1, 11, '2023-03-12 19:35:26', 'wtd1', 0, NULL, NULL, '1');
+INSERT INTO `sys_user` VALUES (13, 'caiwu', 'c665b7606e5c03900bac461e8682109485d6ffc99424bf85b5e847e27580a0b2', 'PfKWfUMhmvyVDUTOqWiP', '12363@163.com', '18465236526', 1, 1, '2023-04-02 13:07:21', '财务员', NULL, NULL, NULL, NULL);
+INSERT INTO `sys_user` VALUES (14, 'yaowu', '6957fe67599f8351c500a4313ee1081ea5d8fd87d541bfb1cc06edb490415d56', 'tP8StQEdtIMKV0rxj44x', '115649@163.com', '19564536203', 1, 1, '2023-04-02 13:09:07', '药物管理员', NULL, NULL, NULL, '0');
+INSERT INTO `sys_user` VALUES (15, 'admin1', '3861b495228de241191a0028d483acec3f25b0ef57b6576c7672f7f4a06ae274', 'YOFiGYvcBGfZPwaZ42fg', 'awd@163.com', '18219353636', 1, 1, '2023-04-02 13:25:11', 'wada', NULL, NULL, NULL, '0');
 
 -- ----------------------------
 -- Table structure for sys_user_role
@@ -786,19 +877,21 @@ CREATE TABLE `sys_user_role`  (
   `user_id` bigint(0) NULL DEFAULT NULL COMMENT '用户ID',
   `role_id` bigint(0) NULL DEFAULT NULL COMMENT '角色ID',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 19 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户与角色对应关系' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 26 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户与角色对应关系' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_user_role
 -- ----------------------------
-INSERT INTO `sys_user_role` VALUES (1, 2, 1);
-INSERT INTO `sys_user_role` VALUES (2, 2, 2);
 INSERT INTO `sys_user_role` VALUES (11, 11, 1);
 INSERT INTO `sys_user_role` VALUES (12, 11, 2);
 INSERT INTO `sys_user_role` VALUES (13, 11, 3);
-INSERT INTO `sys_user_role` VALUES (17, 10, 2);
-INSERT INTO `sys_user_role` VALUES (18, 10, 1);
 INSERT INTO `sys_user_role` VALUES (19, 12, 4);
+INSERT INTO `sys_user_role` VALUES (20, 2, 1);
+INSERT INTO `sys_user_role` VALUES (21, 14, 6);
+INSERT INTO `sys_user_role` VALUES (22, 10, 2);
+INSERT INTO `sys_user_role` VALUES (23, 15, 2);
+INSERT INTO `sys_user_role` VALUES (24, 15, 3);
+INSERT INTO `sys_user_role` VALUES (25, 15, 4);
 
 -- ----------------------------
 -- Table structure for sys_user_token
@@ -816,7 +909,7 @@ CREATE TABLE `sys_user_token`  (
 -- ----------------------------
 -- Records of sys_user_token
 -- ----------------------------
-INSERT INTO `sys_user_token` VALUES (1, 'd67b4bd3471f6749c54544ddaf347aa0', '2023-03-18 04:21:28', '2023-03-17 16:21:28');
+INSERT INTO `sys_user_token` VALUES (1, '6ab6873ccf3383e6aae8e9cf1f501a4e', '2023-04-16 23:21:38', '2023-04-16 11:21:38');
 INSERT INTO `sys_user_token` VALUES (2, 'b663eaba017b59ff42f78b4dc1d8ff46', '2023-03-13 07:33:03', '2023-03-12 19:33:03');
 INSERT INTO `sys_user_token` VALUES (10, 'e3bfa15e02312cbbf4cbda05767bb8db', '2023-03-13 07:33:28', '2023-03-12 19:33:28');
 INSERT INTO `sys_user_token` VALUES (11, 'f2df90097cb02983da1c5e00ee279b34', '2023-03-13 07:36:05', '2023-03-12 19:36:05');
